@@ -49,6 +49,7 @@ install(TARGETS
 install(DIRECTORY
   # add directories here
   config
+  description
   launch
   meshes
   models

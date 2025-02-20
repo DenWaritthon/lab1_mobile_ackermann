@@ -1,0 +1,307 @@
+<?xml version="1.0"?>
+
+<robot name="limo_four_diff" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find lab1_mobile_ackermann)/urdf/limo_xacro.xacro" />
+  <xacro:include filename="$(find lab1_mobile_ackermann)/urdf/limo_steering_hinge.xacro" />
+
+  <!-- Variables -->
+  <xacro:property name="M_PI" value="3.14159"/>
+
+  <!-- Vehicle Geometries -->
+  <xacro:property name="base_x_size" value="0.13" />
+  <xacro:property name="base_y_size" value="0.12" />
+  <xacro:property name="base_z_size" value="0.1" />
+
+  <xacro:property name="wheelbase" value="0.2"/>
+  <xacro:property name="track" value="0.13"/>
+  <xacro:property name="wheel_vertical_offset" value="-0.10" />
+  <xacro:property name="base_mass" value="2.1557"/>
+
+  <xacro:property name="wheel_length" value="0.001" />
+  <xacro:property name="wheel_radius" value="0.045" />
+
+  <!-- Base Footprint -->
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0.0 0.0 0.15" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Model of the robot -->
+    <!-- Base link -->
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 -0.15" rpy="0 0 1.57" />
+            <geometry>
+                <mesh filename="package://lab1_mobile_ackermann/meshes/limo_optimal.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+              <box size="${base_x_size} ${base_y_size} ${base_z_size}"/>
+          </geometry>
+        </collision>
+    </link>
+
+    <link name="inertial_link">
+      <inertial>
+          <origin xyz="0.0 0.0 0.0" />
+          <mass value="${base_mass}" />
+          <inertia ixx="0.0043832566666666675" ixy="0" ixz="0" 
+                    iyy="0.004832360833333334" iyz="0" 
+                    izz="0.005622784166666667" />
+      </inertial>
+    </link>
+
+    <joint name="inertial_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="inertial_link" />
+    </joint>
+    
+    <!-- IMU -->
+    <xacro:limo_imu parent_prefix="base_link" frame_prefix="imu">
+        <origin xyz="0.0 0 -0.1" rpy="0 0 0"/>
+    </xacro:limo_imu>
+
+    <!-- Front Left Wheel -->
+    <xacro:limo_left_steering_hinge parent_prefix="base_link" wheel_prefix="front_left">
+      <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0  0" />
+    </xacro:limo_left_steering_hinge>
+
+    <!-- <link name="front_left">
+      <inertial>
+        <mass value="0.25" />
+        <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525" />
+        <origin xyz="0 0 0" />
+      </inertial>
+      <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <cylinder length="0.0001" radius="0.0001" />
+          </geometry>
+      </visual>
+    </link>
+
+    <joint name="front_left_steering" type="revolute">
+        <parent link="base_link"/>
+        <child link="front_left"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-0.523598767" upper="0.523598767" effort="1000" velocity="1.0" />
+        <dynamics damping="0.0" friction="2.0"/>
+    </joint>
+
+    <link name="front_left_wheel_link">
+      <inertial>
+        <mass value="0.25" />
+        <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525" />
+        <origin xyz="0 0 0" />
+      </inertial>
+      <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+              <mesh filename="package://lab1_mobile_ackermann/meshes/limo_optimal_wheels.dae" />
+          </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 ${wheel_length/2} 0" rpy="1.57 0 0" />
+        <geometry>
+            <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+        </geometry>
+      </collision>
+    </link>
+
+      <joint name="front_left_wheel" type="continuous">
+          <parent link="front_left"/>
+          <child link="front_left_wheel_link"/>
+          <origin xyz="0 0 0" rpy="0 0  0" />
+          <axis xyz="0 1 0"/>
+          <limit effort="100.0" velocity="10.0"/>
+      </joint> -->
+
+
+    <!-- Front Right Wheel -->
+    <xacro:limo_right_steering_hinge parent_prefix="base_link" wheel_prefix="front_right">
+      <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="${M_PI} 0 0" />
+    </xacro:limo_right_steering_hinge>
+
+    <!-- Rear Left Wheel -->
+      <xacro:limo_wheel parent_prefix="base_link" wheel_prefix="rear_left" reflect="1" fixed_on="false">
+          <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+      </xacro:limo_wheel>
+
+    <!-- Rear Right Wheel -->
+      <xacro:limo_wheel parent_prefix="base_link" wheel_prefix="rear_right" reflect="-1" fixed_on="false">
+          <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="${M_PI} 0 0" />
+      </xacro:limo_wheel>
+
+  <!-- Gazebo -->
+    <xacro:include filename="$(find lab1_mobile_ackermann)/urdf/limo_four_acker.gazebo" />
+    
+    <!-- Ground Truth -->
+    <gazebo>
+      <plugin name="ground_truth_plugin" filename="libgazebo_ros_p3d.so">
+        <ros>
+          <namespace>/ground_truth</namespace>
+          <remapping>odom:=pose</remapping>
+        </ros>
+        <body_name>base_footprint</body_name>
+        <frameName>world</frameName>
+        <updateRate>100.0</updateRate>
+      </plugin>
+    </gazebo>
+    
+    <!-- ROS2 Control -->
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find lab1_mobile_ackermann)/config/limo_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+
+      <joint name="rear_left_wheel">
+          <command_interface name="velocity">
+              <param name="min">-5</param>
+              <param name="max">5</param>
+            </command_interface>
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+      </joint>
+
+      <joint name="rear_right_wheel">
+          <command_interface name="velocity">
+              <param name="min">-5</param>
+              <param name="max">5</param>
+            </command_interface>
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+      </joint>
+
+      <joint name="front_left_steering">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+            </command_interface>
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+      </joint>
+
+      <joint name="front_right_steering">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+            </command_interface>
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+      </joint>
+
+    </ros2_control>
+   
+    <!-- IMU -->
+    <gazebo reference="imu_link">
+      <gravity>true</gravity>
+      <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <ros >
+              <remapping>~/out:=imu</remapping>
+          </ros>
+          <topicName>imu</topicName>
+          <bodyName>imu_link</bodyName>
+          <updateRateHZ>10.0</updateRateHZ>
+          <gaussianNoise>0.005</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frame_name>imu_link</frame_name>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+      <imu>
+          <angular_velocity>
+              <x>
+              <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>2e-4</stddev>
+                  <bias_mean>0.000000</bias_mean>
+                  <bias_stddev>0.0000000</bias_stddev>
+              </noise>
+              </x>
+              <y>
+              <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>2e-4</stddev>
+                  <bias_mean>0.000000</bias_mean>
+                  <bias_stddev>0.0000000</bias_stddev>
+              </noise>
+              </y>
+              <z>
+              <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>2e-4</stddev>
+                  <bias_mean>0.000000</bias_mean>
+                  <bias_stddev>0.0000000</bias_stddev>
+              </noise>
+              </z>
+          </angular_velocity>
+          <linear_acceleration>
+              <x>
+              <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>1.7e-2</stddev>
+                  <bias_mean>0.0</bias_mean>
+                  <bias_stddev>0.000</bias_stddev>
+              </noise>
+              </x>
+              <y>
+              <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>1.7e-2</stddev>
+                  <bias_mean>0.0</bias_mean>
+                  <bias_stddev>0.000</bias_stddev>
+              </noise>
+              </y>
+              <z>
+              <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>1.7e-2</stddev>
+                  <bias_mean>0.0</bias_mean>
+                  <bias_stddev>0.000</bias_stddev>
+              </noise>
+              </z>
+          </linear_acceleration>
+          </imu>
+        </sensor>
+    </gazebo>  
+
+</robot>
