@@ -49,11 +49,11 @@ install(TARGETS
 install(DIRECTORY
   # add directories here
   config
+  description
   launch
   meshes
   models
   rviz
-  urdf
   worlds
   DESTINATION share/${PROJECT_NAME})
 
