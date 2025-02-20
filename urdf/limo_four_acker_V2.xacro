@@ -73,57 +73,6 @@
       <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0  0" />
     </xacro:limo_left_steering_hinge>
 
-    <!-- <link name="front_left">
-      <inertial>
-        <mass value="0.25" />
-        <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525" />
-        <origin xyz="0 0 0" />
-      </inertial>
-      <visual>
-          <origin xyz="0 0 0" rpy="0 0 0" />
-          <geometry>
-            <cylinder length="0.0001" radius="0.0001" />
-          </geometry>
-      </visual>
-    </link>
-
-    <joint name="front_left_steering" type="revolute">
-        <parent link="base_link"/>
-        <child link="front_left"/>
-        <axis xyz="0 0 1" />
-        <limit lower="-0.523598767" upper="0.523598767" effort="1000" velocity="1.0" />
-        <dynamics damping="0.0" friction="2.0"/>
-    </joint>
-
-    <link name="front_left_wheel_link">
-      <inertial>
-        <mass value="0.25" />
-        <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525" />
-        <origin xyz="0 0 0" />
-      </inertial>
-      <visual>
-          <origin xyz="0 0 0" rpy="0 0 0" />
-          <geometry>
-              <mesh filename="package://lab1_mobile_ackermann/meshes/limo_optimal_wheels.dae" />
-          </geometry>
-      </visual>
-      <collision>
-        <origin xyz="0 ${wheel_length/2} 0" rpy="1.57 0 0" />
-        <geometry>
-            <cylinder length="${wheel_length}" radius="${wheel_radius}" />
-        </geometry>
-      </collision>
-    </link>
-
-      <joint name="front_left_wheel" type="continuous">
-          <parent link="front_left"/>
-          <child link="front_left_wheel_link"/>
-          <origin xyz="0 0 0" rpy="0 0  0" />
-          <axis xyz="0 1 0"/>
-          <limit effort="100.0" velocity="10.0"/>
-      </joint> -->
-
-
     <!-- Front Right Wheel -->
     <xacro:limo_right_steering_hinge parent_prefix="base_link" wheel_prefix="front_right">
       <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="${M_PI} 0 0" />

@@ -7,6 +7,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
+from launch_ros.substitutions import FindPackageShare
 
 import launch_ros.actions
 import xacro
@@ -25,47 +26,82 @@ def generate_launch_description():
             ),
             launch_arguments={"use_sim_time":"true"}.items()
         )
+    
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(
+                    get_package_share_directory(package_name),
+                    "launch",
+                    "world.launch.py"
+                )
+            ]
+        )
+    )
+
+    spawn_entity = Node(
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        arguments=[
+            "-topic", "robot_description",
+            "-entity", "limo"
+        ],
+        output = "screen"
+    )
 
     joint_state_broadcaster_spawner = Node(
             package="controller_manager",
             executable="spawner",
             arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-            parameters=[{"use_sim_time": False}]
+            parameters=[{"use_sim_time": True}]
         )
 
     velocity_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["velocity_controllers", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": False}]
+        parameters=[{"use_sim_time": True}]
     )
 
-    joint_trajectory_position_controller_spawner = Node(
+    joint_trajectory_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_position_controller", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": False}]
+        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
+        parameters=[{"use_sim_time": True}]
     )
+    
 
     launch_description = LaunchDescription()
 
     launch_description.add_action(
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=joint_state_broadcaster_spawner,
-                    on_exit=[velocity_controller_spawner],
-                )
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=spawn_entity,
+                on_exit=[joint_state_broadcaster_spawner],
             )
         )
+    )
 
     launch_description.add_action(
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=joint_state_broadcaster_spawner,
-                    on_exit=[joint_trajectory_position_controller_spawner],
-                )
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=joint_state_broadcaster_spawner,
+                on_exit=[velocity_controller_spawner],
             )
         )
-    launch_description.add_action(rsp)
+    )
+
+    launch_description.add_action(
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=velocity_controller_spawner,
+                on_exit=[joint_trajectory_controller_spawner],
+            )
+        )
+    )
     
+    launch_description.add_action(gazebo)
+    launch_description.add_action(rsp)
+    launch_description.add_action(spawn_entity)
+
     return launch_description

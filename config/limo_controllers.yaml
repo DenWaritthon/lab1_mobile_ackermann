@@ -5,7 +5,7 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-    joint_trajectory_position_controller:
+    joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
     
     velocity_controllers:
@@ -23,15 +23,13 @@ velocity_controllers:
       - velocity
       - effort
 
-joint_trajectory_position_controller:
+joint_trajectory_controller:
   ros__parameters:
     joints:
       - front_left_steering
       - front_right_steering
-
     command_interfaces:
       - position
-
     state_interfaces:
       - position
       - velocity
