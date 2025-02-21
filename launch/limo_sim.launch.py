@@ -63,10 +63,10 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}]
     )
 
-    steering_position_controller_spawner = Node(
+    steering_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["steering_position_controller", "--controller-manager", "/controller_manager"],
+        arguments=["steering_controller", "--controller-manager", "/controller_manager"],
         parameters=[{"use_sim_time": True}]
     )
     
@@ -95,7 +95,7 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=velocity_controller_spawner,
-                on_exit=[steering_position_controller_spawner],
+                on_exit=[steering_controller_spawner],
             )
         )
     )

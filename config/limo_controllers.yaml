@@ -15,19 +15,21 @@ velocity_controllers:
   ros__parameters:
     use_sim_time: true
     joints: 
-      - rear_left_wheel
-      - rear_right_wheel
+      # - front_left_wheel
+      # - front_right_wheel
+      - back_left_wheel
+      - back_right_wheel
     command_interface: 
       - velocity
     state_interface: 
       - velocity
       - effort
 
-joint_trajectory_controller:
+steering_controller:
   ros__parameters:
     joints:
-      - front_left_steering
-      - front_right_steering
+      - front_left_steering_joint
+      - front_right_steering_joint
     command_interfaces:
       - position
     state_interfaces:
