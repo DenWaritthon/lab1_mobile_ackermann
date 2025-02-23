@@ -2,5 +2,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="fake-limo">
 
     <xacro:include filename="limo_mobile.xacro"/>
-    <xacro:include filename="limo_mobile.gazebo"/>        
+    <xacro:include filename="limo_mobile.gazebo"/>
+    <xacro:include filename="limo_controllers.gazebo"/>
 </robot>

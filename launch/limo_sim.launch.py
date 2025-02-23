@@ -14,6 +14,13 @@ import xacro
 
 def generate_launch_description():
     package_name = "lab1_mobile_ackermann"
+
+    # Spawn the robot in the world
+    spawn_x_val = '9.5'
+    spawn_y_val = '0.0'
+    spawn_z_val = '0.0'
+    spawn_yaw_val = '1.57'
+
     rsp = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [
@@ -40,11 +47,28 @@ def generate_launch_description():
     )
 
     spawn_entity = Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
+        package='gazebo_ros', 
+        executable='spawn_entity.py',
+        arguments=['-entity', 'limo', 
+                '-topic', 'robot_description',
+                '-timeout', '120.0',
+                    '-x', spawn_x_val,
+                    '-y', spawn_y_val,
+                    '-z', spawn_z_val,
+                    '-Y', spawn_yaw_val],
+        output='screen'
+    )
+
+    rviz_file_path = os.path.join(
+        get_package_share_directory(package_name),
+        'rviz',
+        'display.rviz'
+    )
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
         arguments=[
-            "-topic", "robot_description",
-            "-entity", "limo"
+            "-d", rviz_file_path
         ],
         output = "screen"
     )
@@ -103,5 +127,6 @@ def generate_launch_description():
     launch_description.add_action(gazebo)
     launch_description.add_action(rsp)
     launch_description.add_action(spawn_entity)
+    launch_description.add_action(rviz)
 
     return launch_description
