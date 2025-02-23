@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RobotModel1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz_common/Selection
@@ -115,7 +115,7 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         back_left_wheel_link:
           Value: true
         back_right_wheel_link:
@@ -132,30 +132,76 @@ Visualization Manager:
           Value: true
         front_right_wheel_link:
           Value: true
+        odom:
+          Value: true
+        world:
+          Value: true
       Marker Scale: 0.800000011920929
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          chassis_link:
-            back_left_wheel_link:
-              {}
-            back_right_wheel_link:
-              {}
-            front_left_steering_link:
-              front_left_wheel_link:
+        world:
+          base_footprint:
+            chassis_link:
+              back_left_wheel_link:
                 {}
-            front_right_steering_link:
-              front_right_wheel_link:
+              back_right_wheel_link:
                 {}
+              front_left_steering_link:
+                front_left_wheel_link:
+                  {}
+              front_right_steering_link:
+                front_right_wheel_link:
+                  {}
+          odom:
+            {}
       Update Interval: 0
+      Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /ground_truth/pose
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_footprint
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -198,7 +244,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.290334701538086
+      Distance: 5.961458206176758
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -213,10 +259,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.609601616859436
+      Pitch: 0.3753979802131653
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.522266149520874
+      Yaw: 3.442282199859619
     Saved: ~
 Window Geometry:
   Displays:

@@ -54,7 +54,6 @@ install(DIRECTORY
   meshes
   models
   rviz
-  urdf
   worlds
   DESTINATION share/${PROJECT_NAME})
 
