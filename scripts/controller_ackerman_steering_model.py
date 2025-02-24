@@ -29,6 +29,10 @@ class AckermanSteeringController(Node):
         v = msg.linear.x
         omega = float(msg.angular.z)
 
+        # Calculate wheel speed
+        wheel_speed = v / self.wheel_radius
+
+
         # Calculate the steering angle
         delta = np.arctan2(omega * self.wheelbase, v)
 
@@ -55,14 +59,14 @@ class AckermanSteeringController(Node):
 
         # Publish the velocity and steering angle
         velocity_msg = Float64MultiArray()
-        velocity_msg.data = [v, v, v, v]
+        velocity_msg.data = [wheel_speed, wheel_speed, wheel_speed, wheel_speed]
         self.velocity_pub.publish(velocity_msg)
 
         steering_msg = Float64MultiArray()
         steering_msg.data = [dalta_left, dalta_right]
         self.steering_pub.publish(steering_msg)
 
-        self.get_logger().info(f'v: {v}, omega: {omega}, delta: {delta}, delta_left: {dalta_left}, delta_right: {dalta_right}')
+        self.get_logger().info(f'v: {v}, wheel_speed: {wheel_speed}, omega: {omega}, delta: {delta}, delta_left: {dalta_left}, delta_right: {dalta_right}')
 
 def main(args=None):
     rclpy.init(args=args)
