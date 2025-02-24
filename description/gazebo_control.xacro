@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="otto">
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find lab1_mobile_ackermann)/config/controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+
+        <joint name="front_left_steering_joint">
+            <command_interface name="position">
+                <param name="min">-1.5</param>
+                <param name="max">1.5</param>
+              </command_interface>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="effort"/>
+        </joint>
+
+        <joint name="front_right_steering_joint">
+            <command_interface name="position">
+                <param name="min">-1.5</param>
+                <param name="max">1.5</param>
+              </command_interface>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="effort"/>
+        </joint>
+
+        <joint name="front_left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+              </command_interface>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="effort"/>
+        </joint>
+
+        <joint name="front_right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+              </command_interface>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="effort"/>
+        </joint>
+
+        <joint name="rear_left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+              </command_interface>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="effort"/>
+        </joint>
+
+        <joint name="rear_right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+              </command_interface>
+              <state_interface name="position">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+              </state_interface>
+              <state_interface name="effort"/>
+        </joint>
+    </ros2_control>
+
+    <gazebo reference="base_link">
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+    <gazebo reference="front_left_steering_joint">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+    <gazebo reference="front_right_steering_joint">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+    <gazebo reference="front_left_wheel_joint">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+    <gazebo reference="front_right_wheel_joint">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+    <gazebo reference="rear_left_wheel_joint">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+    <gazebo reference="rear_right_wheel_joint">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <minDepth>0.0002</minDepth>
+        <kp  value="1000000.0"/>
+        <kd  value="100.0"/>
+    </gazebo>
+
+</robot>
