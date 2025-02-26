@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
@@ -34,6 +36,8 @@ class BicycleModelController(Node):
 
         # Calculate the steering angle
         delta = np.arctan2(omega * self.wheelbase, v)
+        if delta >= 3.14:
+            delta = 0.0
 
         # Limit the steering angle
         delta = float(np.clip(delta, self.steering_min, self.steering_max))

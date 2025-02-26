@@ -27,9 +27,11 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/dummy_script.py
   scripts/controller_bicycle_model.py
   scripts/controller_ackerman_steering_model.py
+  scripts/odometry_double_track_model.py
+  scripts/odometry_single_track_model.py
+  scripts/odometry_yaw_rate_model.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
