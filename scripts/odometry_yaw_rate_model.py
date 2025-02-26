@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
@@ -6,13 +8,12 @@ from geometry_msgs.msg import Quaternion
 import tf_transformations
 import numpy as np
 
-#!/usr/bin/env python3
 class OdometryYawRate(Node):
 
     def __init__(self):
         super().__init__('odometry_yaw_rate')
 
-         # Subscriber
+        # Subscriber
         self.subscription = self.create_subscription(JointState,'/joint_states',self.joint_state_callback,10)
         
         # Publisher

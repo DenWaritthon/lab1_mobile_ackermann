@@ -29,9 +29,11 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   scripts/controller_bicycle_model.py
   scripts/controller_ackerman_steering_model.py
-  scripts/odometry_double_track_model.py
-  scripts/odometry_single_track_model.py
+  # scripts/odometry_double_track_model.py
+  # scripts/odometry_single_track_model.py
   scripts/odometry_yaw_rate_model.py
+  scripts/path_tracking_pid.py
+  scripts/path_tracking_pure_pursuit.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

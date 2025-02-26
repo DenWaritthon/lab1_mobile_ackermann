@@ -16,7 +16,7 @@ def generate_launch_description():
     package_name = "lab1_mobile_ackermann"
 
     # Spawn the robot in the world
-    spawn_x_val = '9.5'
+    spawn_x_val = '9.0'
     spawn_y_val = '0.0'
     spawn_z_val = '0.0'
     spawn_yaw_val = '1.57'
