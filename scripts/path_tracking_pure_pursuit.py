@@ -59,17 +59,21 @@ class PathTrackingPurePursuit(Node):
         self.target_x = self.path[self.path_index]['x']
         self.target_y = self.path[self.path_index]['y']
 
+    def publish_cmd(self, linear, angular):
+        """Publishes the velocity command."""
+        twist_msg = Twist()
+        twist_msg.linear.x = linear
+        twist_msg.angular.z = angular
+        self.cmd_vel_publisher.publish(twist_msg)
+
     def control_loop(self):           
         if self.last_error < self.lookahead_distance:
             if self.path_index+1 < len(self.path):
                 self.path_index += 1
                 self.update_target()
             else:
-                twist_msg = Twist()
-                twist_msg.linear.x = 0.0
-                twist_msg.angular.z = 0.0
-                
-                self.cmd_vel_publisher.publish(twist_msg)
+                self.publish_cmd(0.0, 0.0)
+
                 self.get_logger().info('Path tracking completed lap')
                 return
             
@@ -81,19 +85,16 @@ class PathTrackingPurePursuit(Node):
         
         distance_error = math.sqrt(error_x**2 + error_y**2)
         
-        # PID control
+        # K control
         control_linear = self.kp_v * distance_error
         control_angular = self.kp_omega * error_yaw
 
         # Limit the speed
         control_linear = np.clip(control_linear, -0.5, 0.5)
         control_angular = np.clip(control_angular, -1, 1)
-        
-        twist_msg = Twist()
-        twist_msg.linear.x = control_linear
-        twist_msg.angular.z = control_angular
-        
-        self.cmd_vel_publisher.publish(twist_msg)
+
+        # Publish Control Commands
+        self.publish_cmd(control_linear, control_angular)
 
         self.get_logger().info(f'Target: {self.target_x}, {self.target_y}, {self.target_yaw}')
         self.get_logger().info(f'Error: {distance_error}, Yaw Error: {error_yaw}, Linear: {control_linear}, Angular: {control_angular}')

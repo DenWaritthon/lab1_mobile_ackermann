@@ -33,7 +33,8 @@ install(PROGRAMS
   # scripts/odometry_single_track_model.py
   scripts/odometry_yaw_rate_model.py
   scripts/path_tracking_pid.py
-  scripts/path_tracking_pure_pursuit.py
+  # scripts/path_tracking_pure_pursuit.py
+  scripts/path_tracking_stanley_control.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

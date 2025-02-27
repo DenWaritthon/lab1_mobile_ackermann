@@ -12,11 +12,11 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from tf_transformations import euler_from_quaternion
 
-class PathTrackingPID(Node):
-    def __init__(self):
-        super().__init__('path_tracking_pid')
 
-        # Load the path from the path.yaml file
+class PathTrackingStanleyController(Node):
+    def __init__(self):
+        super().__init__('path_tracking_stanley_controller')
+                # Load the path from the path.yaml file
         path_file = os.path.join(get_package_share_directory('lab1_mobile_ackermann'),'config','path.yaml')
         
         with open(path_file, 'r') as file:
@@ -32,22 +32,24 @@ class PathTrackingPID(Node):
         self.timer = self.create_timer(0.1, self.control_loop)
 
         # Variable
+        self.wheelbase = 0.2
+        self.track = 0.13
+        self.wheel_radius = 0.045
+
         self.target_x = 0.0
         self.target_y = 0.0
         self.target_yaw = 0.0
         self.path_index = 0
 
         self.kp_v = 1.0
-        self.kp_omega = 1.0
-        self.ki = 0.0
-        self.kd = 0.1
-        
-        self.error_sum = 0.0
+        self.k_cross = 1.0 # Gain for cross-track error
+        self.k_soft = 0.1  # Small constant to avoid instability
+
         self.last_error = 0.0
         self.yaw_error = 0.0
 
         self.update_target()
-        self.get_logger().info(f'Node PathTrackingPID Start!!!!!')
+        self.get_logger().info(f'Node PathTrackingStanleyController Start!!!!!')
              
     def odom_callback(self, msg:Odometry):
         self.current_x = msg.pose.pose.position.x
@@ -60,6 +62,7 @@ class PathTrackingPID(Node):
     def update_target(self):
         self.target_x = self.path[self.path_index]['x']
         self.target_y = self.path[self.path_index]['y']
+        self.target_yaw = self.path[self.path_index]['yaw']
 
     def publish_cmd(self, linear, angular):
         """Publishes the velocity command."""
@@ -69,7 +72,7 @@ class PathTrackingPID(Node):
         self.cmd_vel_publisher.publish(twist_msg)
 
     def control_loop(self):           
-        if self.last_error < 0.5:
+        if self.last_error < 1:
             if self.path_index+1 < len(self.path):
                 self.path_index += 1
                 self.update_target()
@@ -86,30 +89,37 @@ class PathTrackingPID(Node):
         
         distance_error = math.sqrt(error_x**2 + error_y**2)
         
-        self.error_sum += distance_error
-        error_diff = distance_error - self.last_error
-        
-        # PID control
-        control_linear = self.kp_v * distance_error + self.ki * self.error_sum + self.kd * error_diff
-        control_angular = self.kp_omega * error_yaw
+        # Stanley Controller
+        control_linear = 0.5
 
+        # Compute cross-track error
+        front_axle_error = np.dot(
+            np.array([np.cos(self.current_yaw + np.pi / 2), np.sin(self.current_yaw + np.pi / 2)]),
+            np.array([error_x, error_y])
+        )
+
+         # Stanley Control Law
+        cross_track_steering = np.arctan2(self.k_cross * front_axle_error, control_linear + self.k_soft)
+        control_angular = error_yaw + cross_track_steering
+               
         # Limit the speed
         control_linear = np.clip(control_linear, -0.5, 0.5)
         control_angular = np.clip(control_angular, -1, 1)
-        
+
         # Publish Control Commands
         self.publish_cmd(control_linear, control_angular)
 
-        self.get_logger().info(f'Target: {self.target_x}, {self.target_y}, {self.target_yaw}')
-        self.get_logger().info(f'Error: {distance_error}, Yaw Error: {error_yaw}, Linear: {control_linear}, Angular: {control_angular}')
-        
+        self.get_logger().info(f'Index: {self.path_index} Target: {self.target_x}, {self.target_y}, {self.target_yaw}')
+        self.get_logger().info(f'Error: {distance_error}, Yaw Error: {error_yaw}, Linear: {control_linear}, Angular: {control_angular}') 
+
         # Update the error
         self.last_error = distance_error
-        self.yaw_error = error_yaw
+        self.yaw_error = error_yaw      
+        
 
 def main(args=None):
     rclpy.init(args=args)
-    node = PathTrackingPID()
+    node = PathTrackingStanleyController()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
