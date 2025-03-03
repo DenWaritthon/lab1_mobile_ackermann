@@ -2,16 +2,31 @@
 # -*- coding: utf-8 -*-
 import os
 from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
+from launch import LaunchDescription, LaunchContext
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 import xacro
 
+def render_drive_type(context: LaunchContext, launch_description: LaunchDescription, drive_type: LaunchConfiguration):
+    drive_type_str = context.perform_substitution(drive_type)
+
+    controller = Node(
+    	package="lab1_mobile_ackermann",
+    	executable=f"{drive_type_str}_drive.py"
+    )
+
+    launch_description.add_action(controller)
+
 def generate_launch_description():
+
+    # Launch Argument
+    drive_type_launch_arg = DeclareLaunchArgument('type', default_value='ackermann')
+    drive_type = LaunchConfiguration('type')
+    
     package_name = "lab1_mobile_ackermann"
     rviz_file_name = "rviz_config.rviz"
     rviz_file_path = os.path.join(
@@ -66,11 +81,6 @@ def generate_launch_description():
         output = "screen"
     )
 
-    controller = Node(
-    	package="lab1_mobile_ackermann",
-    	executable="ackermann_drive.py"
-    )
-
     # locomotion = Node(
     # 	package="lab1_mobile_ackermann",
     # 	executable="locomotion.py"
@@ -108,6 +118,11 @@ def generate_launch_description():
 
     launch_description = LaunchDescription()
 
+    controller_opaque_function = OpaqueFunction(
+        function=render_drive_type,
+        args=[launch_description, drive_type]
+    )
+
     launch_description.add_action(
         RegisterEventHandler(
             event_handler=OnProcessExit(
@@ -136,10 +151,11 @@ def generate_launch_description():
     )
 
     # Add the rest of the nodes and launch descriptions
+    launch_description.add_action(drive_type_launch_arg)
     launch_description.add_action(rsp)
     launch_description.add_action(rviz)
     launch_description.add_action(spawn_entity)
-    launch_description.add_action(controller)
+    launch_description.add_action(controller_opaque_function)
     # launch_description.add_action(locomotion)
     launch_description.add_action(world)
     return launch_description

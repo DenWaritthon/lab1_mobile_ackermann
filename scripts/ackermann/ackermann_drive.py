@@ -6,9 +6,9 @@ from std_msgs.msg import Float64MultiArray
 from geometry_msgs.msg import Twist
 from ackermann_kinematics import AckermannKinematics
 
-class BasicDriveNode(Node):
+class AckermannDriveNode(Node):
     def __init__(self):
-        super().__init__('basic_drive_node')
+        super().__init__('ackermann_drive_node')
 
         # Communication setup ======================================================================
         # Create Timer
@@ -44,7 +44,7 @@ class BasicDriveNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = BasicDriveNode()
+    node = AckermannDriveNode()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
