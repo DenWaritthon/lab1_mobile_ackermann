@@ -27,6 +27,8 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
+  scripts/kinematics.py
+
   scripts/basic/basic_drive.py
   scripts/basic/basic_kinematics.py
 

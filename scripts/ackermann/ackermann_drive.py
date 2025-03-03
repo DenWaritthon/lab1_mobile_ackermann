@@ -22,24 +22,22 @@ class AckermannDriveNode(Node):
         self.pos_control_pub = self.create_publisher(Float64MultiArray, "/position_controllers/commands", 10)
 
         # Variables ===============================================================================
-        self.steering_angle_L = 0.0
-        self.steering_angle_R = 0.0
+        self.steering_angle = [0.0, 0.0]
         self.w_Wr = 0.0
-        self.w_WfL = 0.0
-        self.w_WfR = 0.0
+        self.w_Wf = [0.0, 0.0]
 
         self.kine = AckermannKinematics(r = 0.045, L = 0.2, B = 0.14)
 
     def cmd_vel_callback(self, msg):
-        self.steering_angle_L, self.steering_angle_R, self.w_Wr, self.w_WfL, self.w_WfR = self.kine.get_wheel_speed([msg.linear.x, msg.angular.z])
+        self.steering_angle, self.w_Wr, self.w_Wf = self.kine.inverse([msg.linear.x, msg.angular.z])
 
     def timer_callback(self):
         vel_msg = Float64MultiArray()
-        vel_msg.data = [self.w_WfL, self.w_WfR, self.w_Wr, self.w_Wr]
+        vel_msg.data = [self.w_Wf[0], self.w_Wf[1], self.w_Wr, self.w_Wr]
         self.vel_control_pub.publish(vel_msg)
 
         pos_msg = Float64MultiArray()
-        pos_msg.data = [self.steering_angle_R, self.steering_angle_L]
+        pos_msg.data = [self.steering_angle[1], self.steering_angle[0]]
         self.pos_control_pub.publish(pos_msg)
 
 def main(args=None):

@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 
 import numpy as np
+from kinematics import Kinematics
 
-class AckermannKinematics():
+class AckermannKinematics(Kinematics):
     def __init__(self, r: float, L: float, B: float):
-        self.r = r
-        self.L = L
-        self.B = B
+        super().__init__(r, L, B)
 
-        self.pos_global = [0.0, 0.0]
-        self.ori_global = 0
-
-    def get_wheel_speed(self, twist: list):
+    def inverse(self, twist: list):
         '''- twist: [v_Rx, w_Rz] when v_Rx is a robot linear velocity in x axis 
                 and w_Rz is a robot angular velocity in z axis'''
         
@@ -45,34 +41,4 @@ class AckermannKinematics():
             w_WfL = w_Wr/np.abs(w_Wr)*np.abs(w_Rz*np.linalg.norm([self.L, R])/self.r)
             w_WfR = w_Wr/np.abs(w_Wr)*np.abs(w_Rz*np.linalg.norm([self.L, R-self.B])/self.r)
 
-        return steering_angle_L, steering_angle_R, w_Wr, w_WfL, w_WfR
-
-    # def get_twist(self, steering_angle: float, w_Wr: float):
-    #     '''- steering_angle: steering angle reference to robot x-axis
-    #        - w_Wr:  rear wheel angular velocity'''
-        
-    #     # Robot Frame Space
-    #     v_Rx = w_Wr * self.r                        # Robot linear velocity in x axis
-    #     w_Rz = v_Rx * np.tan(steering_angle)/self.L # Robot angular velocity in z axis
-
-    #     return v_Rx, w_Rz
-
-    # def get_pose(self, twist: list, dt: float):
-    #     v = twist[0]
-    #     w = twist[1]
-
-    #     # Step Calculation
-    #     dx = v * math.cos(self.ori_global) * dt
-    #     dy = v * math.sin(self.ori_global) * dt
-    #     dtheta = w * dt
-
-    #     # Update
-    #     self.pos_global[0] += dx
-    #     self.pos_global[1] += dy
-    #     self.ori_global    += dtheta
-
-    #     return self.pos_global, self.ori_global
-    
-    # def reset_pose(self):
-    #     self.pos_global = [0.0, 0.0]
-    #     self.ori_global = 0
+        return [steering_angle_L, steering_angle_R], w_Wr, [w_WfL, w_WfR]

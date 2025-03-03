@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 
 import numpy as np
+from kinematics import Kinematics
 
-class BasicKinematics():
-    def __init__(self, r: float, L: float):
-        self.r = r
-        self.L = L
-
-        self.pos_global = [0.0, 0.0]
-        self.ori_global = 0
+class BasicKinematics(Kinematics):
+    def __init__(self, r: float, L: float, B: float):
+        super().__init__(r, L, B)
 
     def inverse(self, twist: list):
         '''- twist: [v_Rx, w_Rz] when v_Rx is a robot linear velocity in x axis 
@@ -32,7 +29,7 @@ class BasicKinematics():
         w_Wr = v_Rx/self.r                                                      # Rear wheel angular velocity
         w_Wf = w_Wr/np.abs(w_Wr)*np.linalg.norm([self.L*w_Rz, v_Rx])/self.r     # Front wheel angular velocity (depend with rear wheel angular velocity)
 
-        return steering_angle, w_Wr, w_Wf
+        return [steering_angle, steering_angle], w_Wr, [w_Wf, w_Wf]
 
     def forward(self, steering_angle: float, w_Wr: float):
         '''- steering_angle: steering angle reference to robot x-axis
@@ -43,23 +40,3 @@ class BasicKinematics():
         w_Rz = v_Rx * np.tan(steering_angle)/self.L # Robot angular velocity in z axis
 
         return v_Rx, w_Rz
-
-    # def get_pose(self, twist: list, dt: float):
-    #     v = twist[0]
-    #     w = twist[1]
-
-    #     # Step Calculation
-    #     dx = v * math.cos(self.ori_global) * dt
-    #     dy = v * math.sin(self.ori_global) * dt
-    #     dtheta = w * dt
-
-    #     # Update
-    #     self.pos_global[0] += dx
-    #     self.pos_global[1] += dy
-    #     self.ori_global    += dtheta
-
-    #     return self.pos_global, self.ori_global
-    
-    # def reset_pose(self):
-    #     self.pos_global = [0.0, 0.0]
-    #     self.ori_global = 0

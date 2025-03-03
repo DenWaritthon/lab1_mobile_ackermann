@@ -22,22 +22,22 @@ class BasicDriveNode(Node):
         self.pos_control_pub = self.create_publisher(Float64MultiArray, "/position_controllers/commands", 10)
 
         # Variables ===============================================================================
-        self.steering_angle = 0.0
+        self.steering_angle = [0.0, 0.0]
         self.w_Wr = 0.0
-        self.w_Wf = 0.0
+        self.w_Wf = [0.0, 0.0]
 
-        self.kine = BasicKinematics(r = 0.045, L = 0.2)
+        self.kine = BasicKinematics(r = 0.045, L = 0.2, B = 0.14)
 
     def cmd_vel_callback(self, msg):
         self.steering_angle, self.w_Wr, self.w_Wf = self.kine.inverse([msg.linear.x, msg.angular.z])
 
     def timer_callback(self):
         vel_msg = Float64MultiArray()
-        vel_msg.data = [self.w_Wf, self.w_Wf, self.w_Wr, self.w_Wr]
+        vel_msg.data = [self.w_Wf[0], self.w_Wf[1], self.w_Wr, self.w_Wr]
         self.vel_control_pub.publish(vel_msg)
 
         pos_msg = Float64MultiArray()
-        pos_msg.data = [self.steering_angle, self.steering_angle]
+        pos_msg.data = [self.steering_angle[1], self.steering_angle[0]]
         self.pos_control_pub.publish(pos_msg)
 
 def main(args=None):
