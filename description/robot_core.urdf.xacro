@@ -58,7 +58,7 @@
         <child link="front_left_steering"/>
         <origin xyz="0.1 0.07 0"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-1.5" upper="1.5" effort="10.0" velocity="3.0"/>
+        <limit lower="-${pi/4}" upper="${pi/4}" effort="10.0" velocity="3.0"/>
     </joint>
 
     <joint name="front_left_wheel_joint" type="continuous">
@@ -99,7 +99,7 @@
         <child link="front_right_steering"/>
         <origin xyz="0.1 -0.07 0"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-1.5" upper="1.5" effort="10.0" velocity="3.0"/>
+        <limit lower="-${pi/4}" upper="${pi/4}" effort="10.0" velocity="3.0"/>
     </joint>
 
     <joint name="front_right_wheel_joint" type="continuous">
@@ -120,7 +120,7 @@
         <visual>
             <origin xyz="0 0 -0.005" rpy="${pi/2} 0 0"/>
             <geometry>
-                <mesh filename="file://$(find ${description_package})/meshes/limo_wheel.dae"/>
+                <mesh filename="file://$(find ${description_package})/meshes/limo_wheel.dae" scale="1 1 1"/>
             </geometry>
         </visual>
         <collision>
@@ -145,7 +145,7 @@
         <visual>
             <origin xyz="0 0 -0.005" rpy="${pi/2} 0 0"/>
             <geometry>
-                <mesh filename="file://$(find ${description_package})/meshes/limo_wheel.dae"/>
+                <mesh filename="file://$(find ${description_package})/meshes/limo_wheel.dae" scale="1 1 1"/>
             </geometry>
         </visual>
         <collision>
@@ -170,7 +170,7 @@
         <visual>
             <origin xyz="0 0 -0.005" rpy="${pi/2} 0 0"/>
             <geometry>
-                <mesh filename="file://$(find ${description_package})/meshes/limo_wheel.dae"/>
+                <mesh filename="file://$(find ${description_package})/meshes/limo_wheel.dae" scale="1 1 1"/>
             </geometry>
         </visual>
         <collision>

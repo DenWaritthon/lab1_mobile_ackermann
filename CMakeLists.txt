@@ -27,7 +27,12 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/dummy_script.py
+  scripts/basic/basic_drive.py
+  scripts/basic/basic_kinematics.py
+
+  scripts/ackermann/ackermann_drive.py
+  scripts/ackermann/ackermann_kinematics.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
 

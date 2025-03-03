@@ -31,3 +31,9 @@ position_controllers:
     joints: 
       - front_left_steering_joint
       - front_right_steering_joint
+    command_interface: 
+      - position
+    state_interface: 
+      - position
+      - velocity
+      - effort

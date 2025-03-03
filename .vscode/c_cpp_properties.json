@@ -1,0 +1,42 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/absolutezeno/Auto-BT-Generation/install/isaac_ros2_messages/include/**",
+        "/home/absolutezeno/Auto-BT-Generation/install/custom_message/include/**",
+        "/home/absolutezeno/Auto-BT-Generation/install/autogen_bt_interface/include/**",
+        "/home/absolutezeno/FRA501/install/turtlesim_plus_interfaces/include/**",
+        "/home/absolutezeno/FRA501/install/turtlesim_interfaces/include/**",
+        "/home/absolutezeno/FRA501/install/transmission_interface/include/**",
+        "/home/absolutezeno/FRA501/install/controller_manager/include/**",
+        "/home/absolutezeno/FRA501/install/ros2_control_test_assets/include/**",
+        "/home/absolutezeno/FRA501/install/control_toolbox/include/**",
+        "/home/absolutezeno/FRA501/install/realtime_tools/include/**",
+        "/home/absolutezeno/FRA501/install/my_controller_interface/include/**",
+        "/home/absolutezeno/FRA501/install/kinematics_interface_kdl/include/**",
+        "/home/absolutezeno/FRA501/install/kinematics_interface/include/**",
+        "/home/absolutezeno/FRA501/install/joint_limits/include/**",
+        "/home/absolutezeno/FRA501/install/controller_interface/include/**",
+        "/home/absolutezeno/FRA501/install/hardware_interface/include/**",
+        "/home/absolutezeno/FRA501/install/controller_manager_msgs/include/**",
+        "/home/absolutezeno/FRA501/install/control_msgs/include/**",
+        "/home/absolutezeno/FRA501_HardwareInterface/install/xicro_interfaces/include/**",
+        "/home/absolutezeno/FRA501_exam1/install/turtlesim_plus_interfaces/include/**",
+        "/home/absolutezeno/FRA501_exam1/install/turtlesim_plus_control_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/absolutezeno/MobileRobotics2025_hw/src/lab1_mobile_ackermann/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

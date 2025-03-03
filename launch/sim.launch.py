@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -11,7 +13,7 @@ import xacro
 
 def generate_launch_description():
     package_name = "lab1_mobile_ackermann"
-    rviz_file_name = "gazebo.rviz"
+    rviz_file_name = "rviz_config.rviz"
     rviz_file_path = os.path.join(
         get_package_share_directory(package_name),
         'rviz',
@@ -43,6 +45,7 @@ def generate_launch_description():
         )
     )
 
+
     # Spawn the robot in the world
     spawn_x_val = '9.5'
     spawn_y_val = '0.0'
@@ -54,22 +57,22 @@ def generate_launch_description():
         executable="spawn_entity.py",
         arguments=[
             "-topic", "robot_description",
-            "-entity", "my_bot",
-            '-x', spawn_x_val,
-            '-y', spawn_y_val,
-            '-z', spawn_z_val,
-            '-Y', spawn_yaw_val
+            "-entity", "limo"
+            # '-x', spawn_x_val,
+            # '-y', spawn_y_val,
+            # '-z', spawn_z_val,
+            # '-Y', spawn_yaw_val
         ],
         output = "screen"
     )
 
-    # controller = Node(
-    # 	package="my_controller",
-    # 	executable="diff_drive.py"
-    # )
+    controller = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="ackermann_drive.py"
+    )
 
     # locomotion = Node(
-    # 	package="my_controller",
+    # 	package="lab1_mobile_ackermann",
     # 	executable="locomotion.py"
     # )
 
@@ -77,21 +80,21 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": False}]
+        parameters=[{"use_sim_time": True}]
     )
 
     velocity_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["velocity_controllers", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": False}]
+        parameters=[{"use_sim_time": True}]
     )
 
     position_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["position_controllers", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": False}]
+        parameters=[{"use_sim_time": True}]
     )
 
     rviz = Node(
@@ -133,10 +136,10 @@ def generate_launch_description():
     )
 
     # Add the rest of the nodes and launch descriptions
+    launch_description.add_action(rsp)
     launch_description.add_action(rviz)
     launch_description.add_action(spawn_entity)
-    # launch_description.add_action(controller)
+    launch_description.add_action(controller)
     # launch_description.add_action(locomotion)
     launch_description.add_action(world)
-    launch_description.add_action(rsp)
     return launch_description
