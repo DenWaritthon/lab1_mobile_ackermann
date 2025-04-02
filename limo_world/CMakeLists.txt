@@ -47,6 +47,9 @@ install(TARGETS
 
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
+  launch
+  models
+  worlds
   # add directories here
   DESTINATION share/${PROJECT_NAME})
 
