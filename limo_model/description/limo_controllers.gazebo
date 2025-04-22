@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+
+<robot name="limo" xmlns:xacro="http://ros.org/wiki/xacro">
+    <!-- Ground Truth -->
+    <gazebo>
+        <plugin name="ground_truth_plugin" filename="libgazebo_ros_p3d.so">
+            <ros>
+                <namespace>/ground_truth</namespace>
+                <remapping>odom:=pose</remapping>
+            </ros>
+            <body_name>base_footprint</body_name>
+            <frameName>world</frameName>
+            <updateRate>100.0</updateRate>
+        </plugin>
+    </gazebo>
+
+    <!-- ROS2 Control -->
+
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find lab1_mobile_ackermann)/config/limo_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+
+        <!-- Front Left Steering -->
+        <joint name="front_left_steering_joint">
+            <command_interface name="position">
+                <param name="min">-0.523598767</param>
+                <param name="max">0.523598767</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Front Right Steering -->
+        <joint name="front_right_steering_joint">
+            <command_interface name="position">
+                <param name="min">-0.523598767</param>
+                <param name="max">0.523598767</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Front Left Wheel -->
+        <joint name="front_left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Front Right Wheel -->
+        <joint name="front_right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Back Left Wheel -->
+        <joint name="back_left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Back Right Wheel -->
+        <joint name="back_right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-5</param>
+                <param name="max">5</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort"/>
+        </joint>
+
+    </ros2_control>
+
+</robot>
