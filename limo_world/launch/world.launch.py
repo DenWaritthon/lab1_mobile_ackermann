@@ -18,7 +18,7 @@ from launch.actions import SetLaunchConfiguration
 def generate_launch_description():
 
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
-    pkg_world = get_package_share_directory('lab1_mobile_ackermann')
+    pkg_world = get_package_share_directory('limo_world')
 
     model_path =  pkg_world + '/models'
 
