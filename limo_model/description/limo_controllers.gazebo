@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<robot name="limo" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="limo" xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- Ground Truth -->
     <gazebo>
         <plugin name="ground_truth_plugin" filename="libgazebo_ros_p3d.so">
@@ -18,7 +18,7 @@
 
     <gazebo>
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <parameters>$(find lab1_mobile_ackermann)/config/limo_controllers.yaml</parameters>
+            <parameters>$(find limo_model)/config/limo_controllers.yaml</parameters>
         </plugin>
     </gazebo>
 

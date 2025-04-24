@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -15,7 +17,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Process the URDF file
-    pkg_path = os.path.join(get_package_share_directory('lab1_mobile_ackermann'))
+    pkg_path = os.path.join(get_package_share_directory('limo_model'))
     xacro_file = os.path.join(pkg_path,'description','limo.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     

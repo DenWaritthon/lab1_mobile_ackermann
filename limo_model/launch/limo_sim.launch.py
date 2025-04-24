@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -13,7 +15,7 @@ import launch_ros.actions
 import xacro
 
 def generate_launch_description():
-    package_name = "lab1_mobile_ackermann"
+    package_name = "limo_model"
 
     # Spawn the robot in the world
     spawn_x_val = '9.0'
@@ -38,7 +40,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [
                 os.path.join(
-                    get_package_share_directory(package_name),
+                    get_package_share_directory('limo_world'),
                     "launch",
                     "world.launch.py"
                 )

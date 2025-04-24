@@ -1,0 +1,16 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/waritt/mobile_ws/install/limo_world/local/lib/python3.10/dist-packages",
+        "/home/waritt/mobile_ws/install/limo_model/local/lib/python3.10/dist-packages",
+        "/home/waritt/mobile_ws/install/limo_controller/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/waritt/mobile_ws/install/limo_world/local/lib/python3.10/dist-packages",
+        "/home/waritt/mobile_ws/install/limo_model/local/lib/python3.10/dist-packages",
+        "/home/waritt/mobile_ws/install/limo_controller/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
