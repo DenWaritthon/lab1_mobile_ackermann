@@ -19,7 +19,7 @@ def generate_launch_description():
 
     # Spawn the robot in the world
     spawn_x_val = '9.0'
-    spawn_y_val = '0.0'
+    spawn_y_val = '-1.0'
     spawn_z_val = '0.0'
     spawn_yaw_val = '1.57'
 
@@ -57,7 +57,8 @@ def generate_launch_description():
                     '-x', spawn_x_val,
                     '-y', spawn_y_val,
                     '-z', spawn_z_val,
-                    '-Y', spawn_yaw_val],
+                    '-Y', spawn_yaw_val
+                    ],
         output='screen'
     )
 
@@ -134,12 +135,10 @@ def generate_launch_description():
         output="screen"
     )
 
-    # Static Transform Publisher (world -> base_footprint)
-    static_tf_world_base = launch_ros.actions.Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        arguments=[spawn_x_val, spawn_y_val, spawn_z_val, spawn_yaw_val, "0", "0", "world", "base_footprint"],
-        output="screen"
+    tf_world_base = Node(
+        package=package_name,
+        executable="ground_truth_TF.py",
+        output = "screen"
     )
 
     launch_description.add_action(gazebo)
@@ -147,6 +146,6 @@ def generate_launch_description():
     launch_description.add_action(spawn_entity)
     launch_description.add_action(rviz)
     launch_description.add_action(static_tf_world_odom)
-    launch_description.add_action(static_tf_world_base)
+    launch_description.add_action(tf_world_base)
 
     return launch_description

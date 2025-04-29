@@ -35,6 +35,8 @@ install(PROGRAMS
   scripts/controller/ackermann/ackermann_kinematics.py
   scripts/controller/ackermann/ackermann_drive.py
 
+  scripts/path_tracking/path_tracking_pid.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -55,6 +57,7 @@ install(TARGETS
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
+  config
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()
