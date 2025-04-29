@@ -27,15 +27,14 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/controller_bicycle_model.py
-  scripts/controller_ackerman_steering_model.py
+  scripts/kinematics.py
 
-  scripts/odometry_yaw_rate_model.py
+  scripts/controller/basic/basic_kinematics.py
+  scripts/controller/basic/basic_drive.py
 
-  scripts/path_tracking_pid.py
-  scripts/path_tracking_pure_pursuit.py
-  scripts/path_tracking_stanley_control.py
-  
+  scripts/controller/ackermann/ackermann_kinematics.py
+  scripts/controller/ackermann/ackermann_drive.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
 
