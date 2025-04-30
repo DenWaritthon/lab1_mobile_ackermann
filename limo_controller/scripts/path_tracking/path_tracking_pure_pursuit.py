@@ -12,9 +12,9 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from tf_transformations import euler_from_quaternion
 
-class PathTrackingPID(Node):
+class PathTrackingPurePursuit(Node):
     def __init__(self):
-        super().__init__('path_tracking_pid')
+        super().__init__('path_tracking_pure_pursuit')
 
         # Path setup ==============================================================================
         # Load the path from the path.yaml file
@@ -43,17 +43,13 @@ class PathTrackingPID(Node):
         self.current_y = 0.0
         self.current_yaw = 0.0
 
+        self.lookahead_distance = 0.5  # Lookahead distance for Pure Pursuit
         self.kp_v = 1.0
-        self.kp_omega = 1.0
-        self.ki = 0.0
-        self.kd = 0.1
-        
-        self.error_sum = 0.0
-        self.last_error = 0.0
+        self.kp_omega = 2.0
 
         self.update_target()
 
-        self.get_logger().info('Path tracking PID initialized')
+        self.get_logger().info('Path tracking Pure Pursuit initialized')
              
     def ground_truth_callback(self, msg:Odometry):
         self.current_x = msg.pose.pose.position.x
@@ -86,33 +82,26 @@ class PathTrackingPID(Node):
         error_yaw = math.atan2(math.sin(error_yaw), math.cos(error_yaw))
 
         # Check if the path is completed           
-        if distance_error < 0.1:
+        if distance_error < self.lookahead_distance: 
             if self.path_index+1 < len(self.path):
                 self.path_index += 1
                 self.update_target()
                 return
             else:
                 self.publish_cmd(0.0, 0.0)
-                self.get_logger().info('Path tracking PID Completed lap')
+                self.get_logger().info('Path tracking Pure Pursuit Completed lap')
                 exit()
-
-        # Update the error for PID control    
-        self.error_sum += distance_error
-        error_diff = distance_error - self.last_error
         
-        # PID control
-        control_linear = self.kp_v * distance_error + self.ki * self.error_sum + self.kd * error_diff
+        # P control
+        control_linear = self.kp_v * distance_error
         control_angular = self.kp_omega * error_yaw
         
         # Publish Control Commands
         self.publish_cmd(control_linear, control_angular)
 
-        # Update the last error
-        self.last_error = distance_error
-
 def main(args=None):
     rclpy.init(args=args)
-    node = PathTrackingPID()
+    node = PathTrackingPurePursuit()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()

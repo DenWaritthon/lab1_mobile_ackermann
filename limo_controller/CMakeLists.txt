@@ -36,6 +36,7 @@ install(PROGRAMS
   scripts/controller/ackermann/ackermann_drive.py
 
   scripts/path_tracking/path_tracking_pid.py
+  scripts/path_tracking/path_tracking_pure_pursuit.py
 
   DESTINATION lib/${PROJECT_NAME}
 )
