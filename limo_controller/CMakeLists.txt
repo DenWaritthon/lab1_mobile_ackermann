@@ -37,6 +37,7 @@ install(PROGRAMS
 
   scripts/path_tracking/path_tracking_pid.py
   scripts/path_tracking/path_tracking_pure_pursuit.py
+  scripts/path_tracking/path_tracking_stanley_control.py
 
   DESTINATION lib/${PROJECT_NAME}
 )
