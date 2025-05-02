@@ -11,6 +11,8 @@ import yaml
 import os
 from ament_index_python.packages import get_package_share_directory
 from tf_transformations import euler_from_quaternion
+from rclpy.parameter import Parameter
+from rcl_interfaces.msg import SetParametersResult
 
 class PathTrackingPurePursuit(Node):
     def __init__(self):
@@ -23,12 +25,28 @@ class PathTrackingPurePursuit(Node):
         with open(path_file, 'r') as file:
             self.path = yaml.safe_load(file)
 
+        # Parameter setup ==========================================================================
+        # Declare parameters with default values
+        self.declare_parameter('use_ekf', False)
+        self.declare_parameter('lookahead_distance', 0.5)
+        self.declare_parameter('kp_v', 1.5)
+        self.declare_parameter('kp_omega', 3.0)
+
+        # Get the value of a parameter
+        self.use_ekf = self.get_parameter('use_ekf').value
+
+        # Add a callback for parameter updates
+        self.add_on_set_parameters_callback(self.parameter_update_callback)
+
         # Communication setup ======================================================================
         # Create Timer
         self.timer = self.create_timer(0.1, self.control_loop)
 
         # Create Subscriber
-        self.ground_truth_subscriber = self.create_subscription(Odometry, '/ground_truth/pose', self.ground_truth_callback, 10)
+        if self.use_ekf:
+            self.odom_subscriber = self.create_subscription(Odometry, '/ekf_pose', self.odom_callback, 10)
+        else:
+            self.odom_subscriber = self.create_subscription(Odometry, '/ground_truth/pose', self.odom_callback, 10)
 
         # Create Publisher
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -43,15 +61,25 @@ class PathTrackingPurePursuit(Node):
         self.current_y = 0.0
         self.current_yaw = 0.0
 
-        self.lookahead_distance = 0.5  # Lookahead distance for Pure Pursuit
-        self.kp_v = 1.0
-        self.kp_omega = 2.0
+        self.lookahead_distance = self.get_parameter('lookahead_distance').value
+        self.kp_v = self.get_parameter('kp_v').value
+        self.kp_omega = self.get_parameter('kp_omega').value
 
         self.update_target()
 
         self.get_logger().info('Path tracking Pure Pursuit initialized')
+
+    def parameter_update_callback(self, params:list[Parameter]):
+        for param in params:
+            if param.name == 'kp_v':
+                self.kp_v = param.value
+                self.get_logger().info(f"Parameter 'kp_v' updated to: {self.kp_v}")
+            elif param.name == 'kp_omega':
+                self.kp_omega = param.value
+                self.get_logger().info(f"Parameter 'kp_omega' updated to: {self.kp_omega}")
+        return SetParametersResult(successful=True)
              
-    def ground_truth_callback(self, msg:Odometry):
+    def odom_callback(self, msg:Odometry):
         self.current_x = msg.pose.pose.position.x
         self.current_y = msg.pose.pose.position.y
         orientation_q = msg.pose.pose.orientation

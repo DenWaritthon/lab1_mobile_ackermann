@@ -11,6 +11,8 @@ import yaml
 import os
 from ament_index_python.packages import get_package_share_directory
 from tf_transformations import euler_from_quaternion
+from rclpy.parameter import Parameter
+from rcl_interfaces.msg import SetParametersResult
 
 class PathTrackingStanleyController(Node):
     def __init__(self):
@@ -23,12 +25,27 @@ class PathTrackingStanleyController(Node):
         with open(path_file, 'r') as file:
             self.path = yaml.safe_load(file)
 
+        # Parameter setup ==========================================================================
+        # Declare parameters with default values
+        self.declare_parameter('use_ekf', False)
+        self.declare_parameter('velocity', 0.5)
+        self.declare_parameter('k', 1.0)
+
+        # Get the value of a parameter
+        self.use_ekf = self.get_parameter('use_ekf').value
+
+        # Add a callback for parameter updates
+        self.add_on_set_parameters_callback(self.parameter_update_callback)
+
         # Communication setup ======================================================================
         # Create Timer
         self.timer = self.create_timer(0.1, self.control_loop)
 
         # Create Subscriber
-        self.ground_truth_subscriber = self.create_subscription(Odometry, '/ground_truth/pose', self.ground_truth_callback, 10)
+        if self.use_ekf:
+            self.odom_subscriber = self.create_subscription(Odometry, '/ekf_pose', self.odom_callback, 10)
+        else:
+            self.odom_subscriber = self.create_subscription(Odometry, '/ground_truth/pose', self.odom_callback, 10)
 
         # Create Publisher
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -37,20 +54,34 @@ class PathTrackingStanleyController(Node):
         self.target_x = 0.0
         self.target_y = 0.0
         self.target_yaw = 0.0
+        
+        self.previous_target_x = 0.0
+        self.previous_target_y = 0.0
+
         self.path_index = 0
 
         self.current_x = 0.0
         self.current_y = 0.0
         self.current_yaw = 0.0
 
-        self.velocity = 0.5
-        self.k = 1.0
+        self.velocity = self.get_parameter('velocity').value
+        self.k = self.get_parameter('k').value
 
         self.update_target()
 
         self.get_logger().info('Path tracking Stanley Controller initialized')
+
+    def parameter_update_callback(self, params:list[Parameter]):
+        for param in params:
+            if param.name == 'velocity':
+                self.velocity = param.value
+                self.get_logger().info(f"Parameter 'velocity' updated to: {self.velocity}")
+            elif param.name == 'k':
+                self.k = param.value
+                self.get_logger().info(f"Parameter 'k' updated to: {self.k}")
+        return SetParametersResult(successful=True)
              
-    def ground_truth_callback(self, msg:Odometry):
+    def odom_callback(self, msg:Odometry):
         self.current_x = msg.pose.pose.position.x
         self.current_y = msg.pose.pose.position.y
         orientation_q = msg.pose.pose.orientation
@@ -83,6 +114,8 @@ class PathTrackingStanleyController(Node):
         # Check if the path is completed           
         if distance_error < 0.1: 
             if self.path_index+1 < len(self.path):
+                self.previous_target_x = self.target_x
+                self.previous_target_y = self.target_y
                 self.path_index += 1
                 self.update_target()
                 return
@@ -90,17 +123,16 @@ class PathTrackingStanleyController(Node):
                 self.publish_cmd(0.0, 0.0)
                 self.get_logger().info('Path tracking Stanley Controller Completed lap')
                 exit()
-        
-        # Calculate the heading error
-        heading_error = error_yaw - self.current_yaw
-        heading_error = math.atan2(math.sin(heading_error), math.cos(heading_error))
 
         # Calculate the cross track error
-        path_vector = [math.cos(error_yaw), math.sin(error_yaw)]
-        vehicle_vector = [self.current_x - self.target_x, self.current_y - self.target_y]
-        direction = np.sign(path_vector[0]*vehicle_vector[1] - path_vector[1]*vehicle_vector[0])
+        e_numerator = (self.target_x - self.previous_target_x) * (self.previous_target_y - self.current_y) - (self.previous_target_x - self.current_x) * (self.target_y - self.previous_target_y)
+        e_denominator = math.sqrt((self.target_x - self.previous_target_x)**2 + (self.target_y - self.previous_target_y)**2)
 
-        cross_track_error = distance_error * direction
+        cross_track_error = e_numerator / e_denominator
+
+        # Calculate the heading error
+        heading_error = math.atan2(self.target_y - self.previous_target_y, self.target_x - self.previous_target_x)
+        heading_error = heading_error - self.current_yaw 
 
         # Calculate the steering angle using Stanley control law
         cross_track_steering = math.atan2(self.k * cross_track_error, self.velocity)
