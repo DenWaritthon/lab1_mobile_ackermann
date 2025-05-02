@@ -26,16 +26,9 @@ class PathTrackingStanleyController(Node):
             self.path = yaml.safe_load(file)
 
         # Parameter setup ==========================================================================
-        # Declare parameters with default values
+        # Declare parameters for use_ekf
         self.declare_parameter('use_ekf', False)
-        self.declare_parameter('velocity', 0.5)
-        self.declare_parameter('k', 1.0)
-
-        # Get the value of a parameter
         self.use_ekf = self.get_parameter('use_ekf').value
-
-        # Add a callback for parameter updates
-        self.add_on_set_parameters_callback(self.parameter_update_callback)
 
         # Communication setup ======================================================================
         # Create Timer
@@ -64,22 +57,12 @@ class PathTrackingStanleyController(Node):
         self.current_y = 0.0
         self.current_yaw = 0.0
 
-        self.velocity = self.get_parameter('velocity').value
-        self.k = self.get_parameter('k').value
+        self.velocity = 0.5
+        self.k = 1.0
 
         self.update_target()
 
         self.get_logger().info('Path tracking Stanley Controller initialized')
-
-    def parameter_update_callback(self, params:list[Parameter]):
-        for param in params:
-            if param.name == 'velocity':
-                self.velocity = param.value
-                self.get_logger().info(f"Parameter 'velocity' updated to: {self.velocity}")
-            elif param.name == 'k':
-                self.k = param.value
-                self.get_logger().info(f"Parameter 'k' updated to: {self.k}")
-        return SetParametersResult(successful=True)
              
     def odom_callback(self, msg:Odometry):
         self.current_x = msg.pose.pose.position.x
