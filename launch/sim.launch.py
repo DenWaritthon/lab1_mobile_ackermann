@@ -21,11 +21,25 @@ def render_drive_type(context: LaunchContext, launch_description: LaunchDescript
 
     launch_description.add_action(controller)
 
+def render_odometry_model(context: LaunchContext, launch_description: LaunchDescription, odom_model: LaunchConfiguration):
+    odom_model_str = context.perform_substitution(odom_model)
+
+    odometry = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="odometry.py",
+        arguments=["--model", odom_model_str]
+    )
+
+    launch_description.add_action(odometry)
+
 def generate_launch_description():
 
     # Launch Argument
     drive_type_launch_arg = DeclareLaunchArgument('type', default_value='ackermann')
+    odom_model_launch_arg = DeclareLaunchArgument('model', default_value='single_track')
+
     drive_type = LaunchConfiguration('type')
+    odom_model = LaunchConfiguration('model')
     
     package_name = "lab1_mobile_ackermann"
     rviz_file_name = "rviz_config.rviz"
@@ -60,12 +74,11 @@ def generate_launch_description():
         )
     )
 
-
     # Spawn the robot in the world
-    spawn_x_val = '9.5'
-    spawn_y_val = '0.0'
-    spawn_z_val = '0.0'
-    spawn_yaw_val = '1.57'
+    spawn_x_val = "9.5"
+    spawn_y_val = "0.0"
+    spawn_z_val = "0.0"
+    spawn_yaw_val = "1.57"
 
     spawn_entity = Node(
         package="gazebo_ros",
@@ -73,18 +86,13 @@ def generate_launch_description():
         arguments=[
             "-topic", "robot_description",
             "-entity", "limo"
-            # '-x', spawn_x_val,
-            # '-y', spawn_y_val,
-            # '-z', spawn_z_val,
-            # '-Y', spawn_yaw_val
+            # "-x", spawn_x_val,
+            # "-y", spawn_y_val,
+            # "-z", spawn_z_val,
+            # "-Y", spawn_yaw_val
         ],
         output = "screen"
     )
-
-    # locomotion = Node(
-    # 	package="lab1_mobile_ackermann",
-    # 	executable="locomotion.py"
-    # )
 
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
@@ -123,6 +131,11 @@ def generate_launch_description():
         args=[launch_description, drive_type]
     )
 
+    odometry_opaque_function = OpaqueFunction(
+        function=render_odometry_model,
+        args=[launch_description, odom_model]
+    )
+
     launch_description.add_action(
         RegisterEventHandler(
             event_handler=OnProcessExit(
@@ -150,12 +163,22 @@ def generate_launch_description():
         )
     )
 
+    # launch_description.add_action(
+    #     RegisterEventHandler(
+    #         event_handler=OnProcessExit(
+    #             target_action=position_controller_spawner,
+    #             on_exit=[odometry_opaque_function],
+    #         )
+    #     )
+    # )
+
     # Add the rest of the nodes and launch descriptions
     launch_description.add_action(drive_type_launch_arg)
+    launch_description.add_action(odom_model_launch_arg)
     launch_description.add_action(rsp)
     launch_description.add_action(rviz)
     launch_description.add_action(spawn_entity)
     launch_description.add_action(controller_opaque_function)
-    # launch_description.add_action(locomotion)
+    launch_description.add_action(odometry_opaque_function)
     launch_description.add_action(world)
     return launch_description
