@@ -28,12 +28,15 @@ ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 install(PROGRAMS
   scripts/kinematics.py
+  scripts/utils.py
 
   scripts/controller/basic/basic_kinematics.py
   scripts/controller/basic/basic_drive.py
 
   scripts/controller/ackermann/ackermann_kinematics.py
   scripts/controller/ackermann/ackermann_drive.py
+
+  scripts/odometry.py
 
   scripts/path_tracking/path_tracking_pid.py
   scripts/path_tracking/path_tracking_pure_pursuit.py
@@ -60,6 +63,7 @@ install(TARGETS
 install(DIRECTORY
   # add directories here
   config
+  launch
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()
