@@ -37,6 +37,7 @@ install(PROGRAMS
   scripts/controller/ackermann/ackermann_drive.py
 
   scripts/odometry.py
+  scripts/gps_emulator.py
 
   scripts/path_tracking/path_tracking_pid.py
   scripts/path_tracking/path_tracking_pure_pursuit.py
