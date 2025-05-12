@@ -94,6 +94,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         rear_left_wheel:
           Alpha: 1
           Show Axes: false
@@ -129,6 +133,14 @@ Visualization Manager:
           Value: true
         front_right_wheel:
           Value: true
+        imu_link:
+          Value: true
+        odom_double_track:
+          Value: true
+        odom_single_track:
+          Value: true
+        odom_yaw_rate:
+          Value: true
         rear_left_wheel:
           Value: true
         rear_right_wheel:
@@ -142,22 +154,20 @@ Visualization Manager:
         base_link:
           chassis:
             {}
-          front_left_steering:
-            front_left_wheel:
-              {}
-          front_right_steering:
-            front_right_wheel:
-              {}
-          rear_left_wheel:
+          imu_link:
             {}
-          rear_right_wheel:
+          odom_double_track:
+            {}
+          odom_single_track:
+            {}
+          odom_yaw_rate:
             {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_link
+    Fixed Frame: odom_yaw_rate
     Frame Rate: 30
   Name: root
   Tools:
@@ -200,25 +210,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.3727800846099854
+      Distance: 10.556633949279785
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.06898597627878189
-        Y: 0.05284712463617325
-        Z: -0.08727654814720154
+        X: -0.2338310182094574
+        Y: 0.1514938324689865
+        Z: 0.1603204756975174
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3953985571861267
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.9254066944122314
+      Yaw: 3.1404216289520264
     Saved: ~
 Window Geometry:
   Displays:

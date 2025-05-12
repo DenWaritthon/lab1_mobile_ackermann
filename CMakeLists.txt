@@ -38,9 +38,10 @@ install(PROGRAMS
 
   scripts/odometry.py
 
+  scripts/liveplotter.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
-
 
 # Include Cpp "include" directory
 include_directories(include)

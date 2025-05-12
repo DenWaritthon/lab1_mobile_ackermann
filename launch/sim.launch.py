@@ -21,25 +21,25 @@ def render_drive_type(context: LaunchContext, launch_description: LaunchDescript
 
     launch_description.add_action(controller)
 
-def render_odometry_model(context: LaunchContext, launch_description: LaunchDescription, odom_model: LaunchConfiguration):
-    odom_model_str = context.perform_substitution(odom_model)
+# def render_odometry_model(context: LaunchContext, launch_description: LaunchDescription, odom_model: LaunchConfiguration):
+#     odom_model_str = context.perform_substitution(odom_model)
 
-    odometry = Node(
-    	package="lab1_mobile_ackermann",
-    	executable="odometry.py",
-        arguments=["--model", odom_model_str]
-    )
+#     odometry = Node(
+#     	package="lab1_mobile_ackermann",
+#     	executable="odometry.py",
+#         arguments=["--model", odom_model_str]
+#     )
 
-    launch_description.add_action(odometry)
+#     launch_description.add_action(odometry)
 
 def generate_launch_description():
 
     # Launch Argument
     drive_type_launch_arg = DeclareLaunchArgument('type', default_value='ackermann')
-    odom_model_launch_arg = DeclareLaunchArgument('model', default_value='single_track')
+    # odom_model_launch_arg = DeclareLaunchArgument('model', default_value='single_track')
 
     drive_type = LaunchConfiguration('type')
-    odom_model = LaunchConfiguration('model')
+    # odom_model = LaunchConfiguration('model')
     
     package_name = "lab1_mobile_ackermann"
     rviz_file_name = "rviz_config.rviz"
@@ -124,6 +124,29 @@ def generate_launch_description():
         output = "screen"
     )
 
+    odometry_single_track = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="odometry.py",
+        arguments=["--model", 'single_track']
+    )
+
+    odometry_double_track = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="odometry.py",
+        arguments=["--model", 'double_track']
+    )
+
+    odometry_yaw_rate = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="odometry.py",
+        arguments=["--model", 'yaw_rate']
+    )
+
+    liveplotter = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="liveplotter.py",
+    )
+
     launch_description = LaunchDescription()
 
     controller_opaque_function = OpaqueFunction(
@@ -131,10 +154,10 @@ def generate_launch_description():
         args=[launch_description, drive_type]
     )
 
-    odometry_opaque_function = OpaqueFunction(
-        function=render_odometry_model,
-        args=[launch_description, odom_model]
-    )
+    # odometry_opaque_function = OpaqueFunction(
+    #     function=render_odometry_model,
+    #     args=[launch_description, odom_model]
+    # )
 
     launch_description.add_action(
         RegisterEventHandler(
@@ -174,11 +197,15 @@ def generate_launch_description():
 
     # Add the rest of the nodes and launch descriptions
     launch_description.add_action(drive_type_launch_arg)
-    launch_description.add_action(odom_model_launch_arg)
+    # launch_description.add_action(odom_model_launch_arg)
     launch_description.add_action(rsp)
     launch_description.add_action(rviz)
     launch_description.add_action(spawn_entity)
     launch_description.add_action(controller_opaque_function)
-    launch_description.add_action(odometry_opaque_function)
+    # launch_description.add_action(odometry_opaque_function)
+    launch_description.add_action(odometry_single_track)
+    launch_description.add_action(odometry_double_track)
+    launch_description.add_action(odometry_yaw_rate)
+    launch_description.add_action(liveplotter)
     launch_description.add_action(world)
     return launch_description
