@@ -21,24 +21,19 @@ def render_drive_type(context: LaunchContext, launch_description: LaunchDescript
 
     launch_description.add_action(controller)
 
-# def render_odometry_model(context: LaunchContext, launch_description: LaunchDescription, odom_model: LaunchConfiguration):
-#     odom_model_str = context.perform_substitution(odom_model)
-
-#     odometry = Node(
-#     	package="lab1_mobile_ackermann",
-#     	executable="odometry.py",
-#         arguments=["--model", odom_model_str]
-#     )
-
-#     launch_description.add_action(odometry)
-
 def generate_launch_description():
 
     # Launch Argument
     drive_type_launch_arg = DeclareLaunchArgument('type', default_value='ackermann')
+    v_x_launch_arg = DeclareLaunchArgument('v_x', default_value='0.0')
+    w_z_launch_arg = DeclareLaunchArgument('w_z', default_value='0.0')
+    time_launch_arg = DeclareLaunchArgument('time', default_value='5.0')
     # odom_model_launch_arg = DeclareLaunchArgument('model', default_value='single_track')
 
     drive_type = LaunchConfiguration('type')
+    v_x = LaunchConfiguration('v_x')
+    w_z = LaunchConfiguration('w_z')
+    time = LaunchConfiguration('time')
     # odom_model = LaunchConfiguration('model')
     
     package_name = "lab1_mobile_ackermann"
@@ -147,17 +142,20 @@ def generate_launch_description():
     	executable="liveplotter.py",
     )
 
+    cmd_vel = Node(
+    	package="lab1_mobile_ackermann",
+    	executable="cmd_vel.py",
+        arguments=["--v_x", v_x,
+                   "--w_z", w_z,
+                   "--time", time]
+    )
+
     launch_description = LaunchDescription()
 
     controller_opaque_function = OpaqueFunction(
         function=render_drive_type,
         args=[launch_description, drive_type]
     )
-
-    # odometry_opaque_function = OpaqueFunction(
-    #     function=render_odometry_model,
-    #     args=[launch_description, odom_model]
-    # )
 
     launch_description.add_action(
         RegisterEventHandler(
@@ -186,26 +184,19 @@ def generate_launch_description():
         )
     )
 
-    # launch_description.add_action(
-    #     RegisterEventHandler(
-    #         event_handler=OnProcessExit(
-    #             target_action=position_controller_spawner,
-    #             on_exit=[odometry_opaque_function],
-    #         )
-    #     )
-    # )
-
     # Add the rest of the nodes and launch descriptions
     launch_description.add_action(drive_type_launch_arg)
-    # launch_description.add_action(odom_model_launch_arg)
+    launch_description.add_action(v_x_launch_arg)
+    launch_description.add_action(w_z_launch_arg)
+    launch_description.add_action(time_launch_arg)
     launch_description.add_action(rsp)
     launch_description.add_action(rviz)
     launch_description.add_action(spawn_entity)
     launch_description.add_action(controller_opaque_function)
-    # launch_description.add_action(odometry_opaque_function)
     launch_description.add_action(odometry_single_track)
     launch_description.add_action(odometry_double_track)
     launch_description.add_action(odometry_yaw_rate)
     launch_description.add_action(liveplotter)
+    launch_description.add_action(cmd_vel)
     launch_description.add_action(world)
     return launch_description

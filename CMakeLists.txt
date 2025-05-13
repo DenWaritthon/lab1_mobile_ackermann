@@ -39,6 +39,7 @@ install(PROGRAMS
   scripts/odometry.py
 
   scripts/liveplotter.py
+  scripts/cmd_vel.py
 
   DESTINATION lib/${PROJECT_NAME}
 )
