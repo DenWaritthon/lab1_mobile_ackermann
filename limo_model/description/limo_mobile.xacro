@@ -6,13 +6,13 @@
     <xacro:include filename="inertial_macros.xacro"/>
 
     <!-- Base Footprint Link -->
-        <link name="base_link"/>
+        <link name="base_footprint"/>
 
     <!-- Chassis -->
         <!-- Joint -->
         <joint name="chassis_joint" type="fixed">
             <origin xyz="0 0 0.15" rpy="0 0 0"/>
-            <parent link="base_link"/>
+            <parent link="base_footprint"/>
             <child link="chassis_link"/>
         </joint>
 

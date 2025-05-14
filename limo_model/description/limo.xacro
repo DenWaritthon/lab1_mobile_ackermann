@@ -4,6 +4,4 @@
     <xacro:include filename="limo_mobile.xacro"/>
     <xacro:include filename="limo_mobile.gazebo"/>
     <xacro:include filename="limo_controllers.gazebo"/>
-    <xacro:include filename="limo_sensor.gazebo"/>
-
 </robot>
