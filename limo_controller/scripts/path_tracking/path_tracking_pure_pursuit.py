@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import rclpy
 from rclpy.node import Node
@@ -10,7 +10,7 @@ import numpy as np
 import yaml
 import os
 from ament_index_python.packages import get_package_share_directory
-from tf_transformations import euler_from_quaternion
+# from tf_transformations import euler_from_quaternion
 
 class PathTrackingPurePursuit(Node):
     def __init__(self):
@@ -58,13 +58,40 @@ class PathTrackingPurePursuit(Node):
         self.update_target()
 
         self.get_logger().info('Path tracking Pure Pursuit initialized')
+
+    def euler_from_quaternion(self,x, y, z, w):
+        """
+        Convert quaternion (x, y, z, w) to Euler angles (roll, pitch, yaw)
+        Returns:
+            roll  - rotation around x-axis in radians
+            pitch - rotation around y-axis in radians
+            yaw   - rotation around z-axis in radians
+        """
+        # Roll (x-axis rotation)
+        sinr_cosp = 2 * (w * x + y * z)
+        cosr_cosp = 1 - 2 * (x * x + y * y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+
+        # Pitch (y-axis rotation)
+        sinp = 2 * (w * y - z * x)
+        if abs(sinp) >= 1:
+            pitch = math.copysign(math.pi / 2, sinp)  # use 90 degrees if out of range
+        else:
+            pitch = math.asin(sinp)
+
+        # Yaw (z-axis rotation)
+        siny_cosp = 2 * (w * z + x * y)
+        cosy_cosp = 1 - 2 * (y * y + z * z)
+        yaw = math.atan2(siny_cosp, cosy_cosp)
+
+        return roll, pitch, yaw
              
     def odom_callback(self, msg:Odometry):
         self.current_x = msg.pose.pose.position.x
         self.current_y = msg.pose.pose.position.y
         orientation_q = msg.pose.pose.orientation
-        orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
-        roll, pitch, yaw = euler_from_quaternion(orientation_list)
+        # orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
+        roll, pitch, yaw = self.euler_from_quaternion(orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w)
         self.current_yaw = yaw
     
     def update_target(self):

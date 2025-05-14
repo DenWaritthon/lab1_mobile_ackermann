@@ -28,8 +28,6 @@ class BasicDriveNode(Node):
 
         self.kine = BasicKinematics(r = 0.045, L = 0.2, B = 0.14)
 
-        self.get_logger().info("Basic Drive Node Initialized")
-
     def cmd_vel_callback(self, msg):
         self.steering_angle, self.w_Wr, self.w_Wf = self.kine.inverse([msg.linear.x, msg.angular.z])
 

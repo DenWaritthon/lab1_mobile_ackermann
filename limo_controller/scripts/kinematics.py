@@ -53,12 +53,12 @@ class Kinematics():
         N1 = v_Wf[0] * np.cos(steering_angle[1] - self.kinematic_slip_angle)
         N2 = v_Wf[1] * np.cos(steering_angle[0] - self.kinematic_slip_angle)
 
-        D1 = self.L * np.sin(steering_angle[0]) * np.cos(steering_angle[1] - self.kinematic_slip_angle)
+        D1 =       self.L * np.sin(steering_angle[0]) * np.cos(steering_angle[1] - self.kinematic_slip_angle)
         D2 = (self.B / 2) * np.cos(steering_angle[0]) * np.cos(steering_angle[1] - self.kinematic_slip_angle)
-        D3 = self.L * np.sin(steering_angle[1]) * np.cos(steering_angle[0] - self.kinematic_slip_angle)
+        D3 =       self.L * np.sin(steering_angle[1]) * np.cos(steering_angle[0] - self.kinematic_slip_angle)
         D4 = (self.B / 2) * np.cos(steering_angle[1]) * np.cos(steering_angle[0] - self.kinematic_slip_angle)
 
-        w_Rz = (N1 - N2) / (D1 + D2 + D3 + D4)
+        w_Rz = (N1 - N2) / (D1 - D2 - D3 - D4)
 
         return [v_Rx, w_Rz]
 
@@ -87,7 +87,7 @@ class Kinematics():
 
         return [v_Rx, w_Rz]
 
-    def get_pose(self, twist: list, dt: float):
+    def get_pose(self, twist: list, dt: float, logger = None):
         """
         Update and return global pose using velocities and timestep.
 
@@ -104,10 +104,15 @@ class Kinematics():
         dy = v_Rx * dt * np.sin(self.kinematic_slip_angle + self.ori_global + (w_Rz * dt) / 2)
         dtheta = w_Rz * dt
 
-        if (not(np.isnan(val) for val in [dx, dy, dtheta])):
+        if all([not(np.isnan(val)) for val in [dx, dy, dtheta]]):
             self.pos_global[0] += dx
             self.pos_global[1] += dy
             self.ori_global += dtheta
+
+        if logger:
+            logger.info(f"type: {type(dx)}, {type(dy)}, {type(dtheta)}, {type(self.pos_global)}, {type(self.ori_global)}")
+            logger.info(f"dx: {dx}, dy: {dy}, dtheta: {dtheta}")
+            logger.info(f"linear pos: {self.pos_global}, angular pos: {self.ori_global}")
 
         return self.pos_global, self.ori_global
 

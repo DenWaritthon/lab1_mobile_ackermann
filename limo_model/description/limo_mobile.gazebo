@@ -4,8 +4,8 @@
    
     <!-- Base Footprint Link -->
     <gazebo reference="base_footprint">
-        <mu1>10</mu1>
-        <mu2>10</mu2>
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
         <kp>1000000.0</kp>
         <kd>100.0</kd>
         <minDepth>0.0002</minDepth>
@@ -15,8 +15,8 @@
 
     <!-- Chassis -->
     <gazebo reference="chassis_link">
-        <mu1>10</mu1>
-        <mu2>10</mu2>
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
         <kp>1000000.0</kp>
         <kd>100.0</kd>
         <minDepth>0.0002</minDepth>
@@ -26,8 +26,8 @@
 
     <!-- Front Left Wheel -->
     <gazebo reference="front_left_wheel_link">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
         <kp>1000000.0</kp>
         <kd>100.0</kd>
         <minDepth>0.0002</minDepth>
@@ -35,8 +35,8 @@
 
     <!-- Front Right Wheel -->
     <gazebo reference="front_right_wheel_link">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
         <kp>1000000.0</kp>
         <kd>100.0</kd>
         <minDepth>0.0002</minDepth>
@@ -44,8 +44,8 @@
 
     <!-- Back Left Wheel -->
     <gazebo reference="back_left_wheel_link">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
         <kp>1000000.0</kp>
         <kd>100.0</kd>
         <minDepth>0.0002</minDepth>
@@ -53,8 +53,8 @@
 
     <!-- Back Right Wheel -->
     <gazebo reference="back_right_wheel_link">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
         <kp>1000000.0</kp>
         <kd>100.0</kd>
         <minDepth>0.0002</minDepth>
