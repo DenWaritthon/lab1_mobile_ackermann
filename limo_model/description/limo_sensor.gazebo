@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="limo">
+    <gazebo reference="imu_link">
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100.0</update_rate>
+        <imu>
+          <angular_velocity>
+            <x>true</x>
+            <y>true</y>
+            <z>true</z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>true</x>
+            <y>true</y>
+            <z>true</z>
+          </linear_acceleration>
+          <orientation>
+            <x>true</x>
+            <y>true</y>
+            <z>true</z>
+          </orientation>
+        </imu>
+        <plugin name="imu_plugin_node" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>~/out:=imu</remapping>
+          </ros>
+          <frame_name>imu_link</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+</robot>

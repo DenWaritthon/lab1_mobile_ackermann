@@ -25,7 +25,7 @@ class GroundTruthTranfrom(Node):
         t = TransformStamped()
         t.header.stamp = msg.header.stamp
         t.header.frame_id = "world"
-        t.child_frame_id = "base_footprint"
+        t.child_frame_id = "base_link"
 
         # Set translation
         t.transform.translation.x = msg.pose.pose.position.x

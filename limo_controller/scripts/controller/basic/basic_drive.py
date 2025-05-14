@@ -19,7 +19,7 @@ class BasicDriveNode(Node):
 
         # Create Publisher
         self.vel_control_pub = self.create_publisher(Float64MultiArray, "/velocity_controllers/commands", 10)
-        self.pos_control_pub = self.create_publisher(Float64MultiArray, "/steering_controller/commands", 10)
+        self.pos_control_pub = self.create_publisher(Float64MultiArray, "/position_controllers/commands", 10)
 
         # Variables ===============================================================================
         self.steering_angle = [0.0, 0.0]
@@ -27,8 +27,6 @@ class BasicDriveNode(Node):
         self.w_Wf = [0.0, 0.0]
 
         self.kine = BasicKinematics(r = 0.045, L = 0.2, B = 0.14)
-
-        self.get_logger().info("Basic Drive Node Initialized")
 
     def cmd_vel_callback(self, msg):
         self.steering_angle, self.w_Wr, self.w_Wf = self.kine.inverse([msg.linear.x, msg.angular.z])
