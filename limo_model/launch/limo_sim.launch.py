@@ -20,6 +20,10 @@ def generate_launch_description():
     # Spawn the robot in the world
     spawn_x_val = '9.0'
     spawn_y_val = '0.0'
+
+    # spawn_x_val = '6.0'
+    # spawn_y_val = '4.0'
+
     spawn_z_val = '0.0'
     spawn_yaw_val = '1.57'
 

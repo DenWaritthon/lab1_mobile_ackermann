@@ -27,7 +27,7 @@ class CmdVelNode(Node):
         self.count_max = int(args_without_ros.time / 0.01)
 
     def timer_callback(self):
-        if self.count < self.count_max and args_without_ros.v_x != 0.0 and args_without_ros.w_z != 0.0:
+        if self.count < self.count_max and not (args_without_ros.v_x == 0.0 and args_without_ros.w_z == 0.0):
             cmd_vel_msg = Twist()
             cmd_vel_msg.linear.x = args_without_ros.v_x
             cmd_vel_msg.angular.z = args_without_ros.w_z

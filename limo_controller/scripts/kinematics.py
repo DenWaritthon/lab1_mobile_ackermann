@@ -3,7 +3,7 @@
 import numpy as np
 
 class Kinematics():
-    def __init__(self, r: float, L: float, B: float, kinematic_slip_angle: float = 0):
+    def __init__(self, r: float = None, L: float = None, B: float = None, kinematic_slip_angle: float = 0):
         """
         Initialize the kinematic parameters.
 

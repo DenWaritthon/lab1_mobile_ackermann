@@ -72,8 +72,20 @@ class OdometryNode(Node):
             self.ctrl_pressed[0] = False
 
     def joint_states_callback(self, msg):
-        self.steering_angle = [msg.position[1], msg.position[0]]
-        self.wheel_speed = msg.velocity[2:]
+        front_left_steering_joint_ind = msg.name.index("front_left_steering_joint")
+        front_right_steering_joint_ind = msg.name.index("front_right_steering_joint")
+
+        front_left_wheel_joint_ind = msg.name.index("front_left_wheel_joint")
+        front_right_wheel_joint_ind = msg.name.index("front_right_wheel_joint")
+
+        back_left_wheel_joint_ind = msg.name.index("back_left_wheel_joint")
+        back_right_wheel_joint_ind = msg.name.index("back_right_wheel_joint")
+
+        self.steering_angle = [msg.position[front_left_steering_joint_ind], msg.position[front_right_steering_joint_ind]]
+        self.wheel_speed = [msg.velocity[front_left_wheel_joint_ind],
+                            msg.velocity[front_right_wheel_joint_ind],
+                            msg.velocity[back_left_wheel_joint_ind],
+                            msg.velocity[back_right_wheel_joint_ind]]
 
     def imu_callback(self, msg):
         self.w_Rz = msg.angular_velocity.z
