@@ -16,7 +16,7 @@ class GPSEmulator(Node):
         self.gps_pub = self.create_publisher(Odometry,'/simulated_gps',10)
 
         # Variables ===============================================================================
-        self.noise_stddev = 1.0
+        self.noise_stddev = 0.25
 
         self.get_logger().info("GPS Emulator Node started, publishing noisy GPS data")
 
@@ -35,6 +35,22 @@ class GPSEmulator(Node):
 
         # Optionally, you could add noise to velocity too
         noisy_msg.twist = msg.twist
+
+        cov = self.noise_stddev ** 2
+
+        noisy_msg.pose.covariance =    [cov, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                        0.0, cov, 0.0, 0.0, 0.0, 0.0,
+                                        0.0, 0.0, cov, 0.0, 0.0, 0.0,
+                                        0.0, 0.0, 0.0, cov, 0.0, 0.0,
+                                        0.0, 0.0, 0.0, 0.0, cov, 0.0,
+                                        0.0, 0.0, 0.0, 0.0, 0.0, cov]
+        
+        noisy_msg.twist.covariance =   [cov, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                        0.0, cov, 0.0, 0.0, 0.0, 0.0,
+                                        0.0, 0.0, cov, 0.0, 0.0, 0.0,
+                                        0.0, 0.0, 0.0, cov, 0.0, 0.0,
+                                        0.0, 0.0, 0.0, 0.0, cov, 0.0,
+                                        0.0, 0.0, 0.0, 0.0, 0.0, cov]
 
         self.gps_pub.publish(noisy_msg)
 

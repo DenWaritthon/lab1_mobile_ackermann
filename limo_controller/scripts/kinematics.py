@@ -27,7 +27,19 @@ class Kinematics():
         :param steering_angle: [steering_angle_L, steering_angle_R] - steering angles relative to the x-axis.
         :return: [steering_angle_L, steering_angle_R] - adjusted steering angles.
         """
-        return np.arctan(2*np.tan(steering_angle[0])*np.tan(steering_angle[1])/(np.tan(steering_angle[0]) + np.tan(steering_angle[1])))
+        try:
+            tan_L = np.tan(steering_angle[0])
+            tan_R = np.tan(steering_angle[1])
+            if not np.isfinite(tan_L) or not np.isfinite(tan_R):
+                return 0.0
+
+            denominator = tan_L + tan_R
+            if abs(denominator) < 1e-6:
+                return 0.0
+
+            return np.arctan((2 * tan_L * tan_R) / denominator)
+        except Exception:
+            return 0.0
 
     def inverse(self, twist: list):
         """
@@ -50,15 +62,26 @@ class Kinematics():
         v_Rx = self.r * np.sum(w_Wr) / 2.0
         v_Wf = np.array(w_Wf) * self.r
 
+        # Guard invalid steering angle
+        if not all(np.isfinite(steering_angle)) or abs(steering_angle[0]) > np.deg2rad(89.0) or abs(steering_angle[1]) > np.deg2rad(89.0):
+            return [v_Rx, 0.0]
+
+        # Numerator
         N1 = v_Wf[0] * np.cos(steering_angle[1] - self.kinematic_slip_angle)
         N2 = v_Wf[1] * np.cos(steering_angle[0] - self.kinematic_slip_angle)
 
+        # Denominator
         D1 =       self.L * np.sin(steering_angle[0]) * np.cos(steering_angle[1] - self.kinematic_slip_angle)
         D2 = (self.B / 2) * np.cos(steering_angle[0]) * np.cos(steering_angle[1] - self.kinematic_slip_angle)
         D3 =       self.L * np.sin(steering_angle[1]) * np.cos(steering_angle[0] - self.kinematic_slip_angle)
         D4 = (self.B / 2) * np.cos(steering_angle[1]) * np.cos(steering_angle[0] - self.kinematic_slip_angle)
 
-        w_Rz = (N1 - N2) / (D1 - D2 - D3 - D4)
+        denominator = D1 - D2 - D3 - D4
+
+        if abs(denominator) < 1e-5:
+            return [v_Rx, 0.0]
+
+        w_Rz = (N1 - N2) / denominator
 
         return [v_Rx, w_Rz]
 

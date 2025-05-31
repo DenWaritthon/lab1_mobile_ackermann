@@ -94,8 +94,7 @@ class PathTrackingPID(Node):
         self.current_x = msg.pose.pose.position.x
         self.current_y = msg.pose.pose.position.y
         orientation_q = msg.pose.pose.orientation
-        orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
-        roll, pitch, yaw = self.euler_from_quaternion(orientation_list)
+        roll, pitch, yaw = self.euler_from_quaternion(orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w)
         self.current_yaw = yaw
     
     def update_target(self):

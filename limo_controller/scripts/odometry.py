@@ -13,6 +13,8 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, default="yaw_rate", help="Forward Kinematics Model")
+parser.add_argument('--pos_cov', type=float, default=0.0, help="Covariance for Position")
+parser.add_argument('--twist_cov', type=float, default=0.0, help="Covariance for Twist")
 args_without_ros, ros_args = parser.parse_known_args()
 
 class OdometryNode(Node):
@@ -39,7 +41,8 @@ class OdometryNode(Node):
         self.odom_pub = self.create_publisher(Odometry, f"/odom/{self.args_cli.model}", 10)
 
         # Create Transform Broadcaster -----------------------
-        self.tf_broadcaster = TransformBroadcaster(self)
+        # self.tf_broadcaster = TransformBroadcaster(self)
+        self.tf_broadcaster = None
 
         # Variables ===============================================================================
         self.steering_angle = [0.0, 0.0]
@@ -106,9 +109,9 @@ class OdometryNode(Node):
         self.pos_global, self.ori_global = self.kine.get_pose(self.twist, dt)
         self.t_last = t
 
-        pub_odom(self.odom_pub, self.tf_broadcaster, t, self.twist, self.pos_global, self.ori_global, f"odom_{self.args_cli.model}")
+        pub_odom(self.odom_pub, t, self.twist, self.pos_global, self.ori_global, self.args_cli.pos_cov, self.args_cli.twist_cov, tf_broadcaster=self.tf_broadcaster, ref_frame=f"odom_{self.args_cli.model}", logger=self.get_logger())
 
-    
+
 def main(args=None):
     rclpy.init(args=ros_args)
     node = OdometryNode(args_without_ros)

@@ -51,7 +51,8 @@ class PathTrackingPurePursuit(Node):
         self.current_y = 0.0
         self.current_yaw = 0.0
 
-        self.lookahead_distance = 0.5
+        # self.lookahead_distance = 0.5
+        self.lookahead_distance = 0.3
         self.kp_v = 1.5
         self.kp_omega = 3.0
 

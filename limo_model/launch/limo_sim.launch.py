@@ -131,25 +131,25 @@ def generate_launch_description():
         )
     )
     
-    # Static Transform Publisher (world -> odom)
-    static_tf_world_odom = launch_ros.actions.Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        arguments=[ "0", "0",  "0", "0", "0", "0", "world", "odom"],
-        output="screen"
-    )
+    # # Static Transform Publisher (world -> odom)
+    # static_tf_world_odom = launch_ros.actions.Node(
+    #     package="tf2_ros",
+    #     executable="static_transform_publisher",
+    #     arguments=[ "0", "0",  "0", "0", "0", "0", "world", "odom"],
+    #     output="screen"
+    # )
 
-    tf_world_base = Node(
-        package=package_name,
-        executable="ground_truth_TF.py",
-        output = "screen"
-    )
+    # tf_world_base = Node(
+    #     package=package_name,
+    #     executable="ground_truth_TF.py",
+    #     output = "screen"
+    # )
 
     launch_description.add_action(gazebo)
     launch_description.add_action(rsp)
     launch_description.add_action(spawn_entity)
     launch_description.add_action(rviz)
-    launch_description.add_action(static_tf_world_odom)
-    launch_description.add_action(tf_world_base)
+    # launch_description.add_action(static_tf_world_odom)
+    # launch_description.add_action(tf_world_base)
 
     return launch_description
