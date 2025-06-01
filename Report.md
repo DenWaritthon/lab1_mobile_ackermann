@@ -345,3 +345,21 @@ To study and compare the performance of each tracking control technique.
 The pure pursuit, PID, and stanley controller are all capable of tracking the given path. The tracking error distribution among all three controller are the same with $\mu\approx3$ cm and the variance $\sigma^2\approx0.00026$ cm2. The small number of tracking error and its variance suggest that the hyperparameters are tuned and the controller algorithm are implemented correctly. 
 
 ### Conclusions
+
+# Part 3: Using EKF in Path Tracking
+## Background Knowledge
+The Extended Kalman Filter (EKF) applies the core principles of the standard Kalman Filter to handle nonlinear systems by performing linearization using the Jacobian matrix evaluated around the current state estimate. EKF operates in three main steps:
+
+1. Prediction Step – Uses a motion model to predict the next state and its associated uncertainty.
+2. Linearization – Computes the Jacobian of the nonlinear functions to facilitate the propagation of uncertainty through the system.
+3. Update Step – Refines the state estimate using sensor measurements, incorporating both measurement deviation and weighting.
+
+In this work, the EKF is implemented through the robot_localization package, which enables EKF-based estimation using the provided sensor data. The package allows flexible tuning of parameters through configurable settings, enabling effective sensor fusion and state estimation.
+
+## Experiments 1
+### Objectives
+1. To implement ekf to compatible odometry from Part 1 to use in path tracking from Part 2.
+2. To study how turning EKF parameter for use in case have more sensor and odometry data.
+
+> [!Warning]
+>  This part is boom!!!!!!!!!
