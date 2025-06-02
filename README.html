@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="fra532-lab-report">FRA532 Lab Report</h1>
+<h2 id="authors">Authors</h2>
+<ul>
+<li>Waritthon Kongnoo 65340500050</li>
+<li>Wasupol Hengsritawat 64340500049</li>
+</ul>
+<p>To run the command provided in this repository, first clone this repository into your source folder of your ROS2 workspace, then run</p>
+<pre class="hljs"><code><div>cd {your_ros_workspace}
+colcon build &amp;&amp; source install/setup.bash
+</div></code></pre>
+<h1 id="part-1-kinematics-of-mobile-robot">Part 1: Kinematics of Mobile Robot</h1>
+<h2 id="background-knowledge">Background Knowledge</h2>
+<h3 id="drive-types">Drive Types</h3>
+<h4 id="basic-drive-bicycle-model">Basic Drive (Bicycle Model)</h4>
+<p>A fundamental method for controlling four-wheeled robots is the <strong>bicycle model</strong>, which approximates the robot as a two-wheeled system with one rear driving wheel and one front steering wheel. This simplified model controls the robot’s <strong>linear velocity</strong> $v_{Rx}$ and <strong>angular velocity</strong> $\omega_{Rz}$ using two key parameters:</p>
+<ul>
+<li>Rear wheel velocity $v_{Wr}$</li>
+<li>Front wheel steering angle $\delta$</li>
+</ul>
+<p><img src="images/part1/Bicycle_Model.jpg" alt="alt text"></p>
+<p>Given the desired robot linear and angular velocities, the steering angle $\delta$ can be computed using the following relation:</p>
+<p>$$\delta = \arctan{\left(\frac{\omega_{Rz}L}{v_{Rx}}\right)}\tag{1}$$</p>
+<p>where $L$ is the wheelbase—the distance between the front and rear axles. The angular velocity of the rear wheel is given by:
+$$\omega_{Wr} = \frac{v_{Rx}}{r} \tag{2}$$</p>
+<p>where $r$ is the radius of the wheel. The linear velocity of the front wheel can be expressed as:</p>
+<p>$$\begin{align*}v_{Wf} &amp;= \frac{v_{Rx}}{\lvert{}v_{Rx}\rvert{}}\lvert{\omega_{Rz}} \rvert{} \sqrt{L^2+R^2}
+\end{align*}$$</p>
+<p>This can be reformulated to compute the angular velocity of the front wheel as:</p>
+<p>$$\omega_{Wf}=\frac{v_{Rx}}{r\lvert{}v_{Rx}\rvert{}} \sqrt{L^2\omega_{Rz}^2+v_{Rx}^2}\tag{3}$$</p>
+<p>To apply the bicycle model to a four-wheeled mobile robot, the same steering angle $\delta$ is typically applied to both front wheels. However, this simplification leads to slippage, since the front wheels rotate around parallel axes and do not share a common instantaneous center of rotation. This misalignment causes lateral forces that can reduce motion accuracy, especially during tight turns.</p>
+<h4 id="ackermann-drive">Ackermann Drive</h4>
+<p><strong>Ackermann Drive</strong> (or <em>Ackermann Steering Geometry</em>) is a steering mechanism commonly used in four-wheeled vehicles to ensure that all wheels follow circular paths <strong>without slipping</strong> during a turn.</p>
+<p>Unlike differential or bicycle models, Ackermann steering more accurately reflects real car-like motion, where:</p>
+<ul>
+<li>Only the <strong>front wheels</strong> are used for steering</li>
+<li>Each front wheel is turned at a <strong>different angle</strong> during a turn:
+<ul>
+<li>$\delta_L$: steering angle of the front-left wheel</li>
+<li>$\delta_R$: steering angle of the front-right wheel</li>
+</ul>
+</li>
+</ul>
+<p><img src="images/part1/Ackermann_Model.jpg" alt="Ackermann Model"></p>
+<p>Given the desired robot linear and angular velocities, the <strong>Ackermann steering angle</strong> $\delta_{\text{Ack}}$ can be calculated using the same relation as in the bicycle model:</p>
+<p>$$\delta_{\text{Ack}} = \arctan\left(\frac{\omega_{Rz}L}{v_{Rx}}\right)\tag{4}$$</p>
+<p>To maintain a common <strong>instantaneous center of rotation</strong>, the steering angles for the left and right front wheels are derived geometrically as:</p>
+<p>$$\delta_L = \arctan\left( \frac{L \tan(\delta_{\text{Ack}})}{L + 0.5B \tan(\delta_{\text{Ack}})} \right), \quad\delta_R = \arctan\left( \frac{L \tan(\delta_{\text{Ack}})}{L - 0.5B \tan(\delta_{\text{Ack}})} \right)\tag{5}$$</p>
+<p>Given the actual steering angles of both front wheels, the <strong>effective Ackermann steering angle</strong> can be recovered using:</p>
+<p>$$\delta_{\text{Ack}} = \arctan\left( \frac{2 \tan(\delta_L) \tan(\delta_R)}{\tan(\delta_L) + \tan(\delta_R)} \right)\tag{6}$$</p>
+<p>The angular velocity of the rear wheel follows the same equation as in the bicycle model:</p>
+<p>$$\omega_{Wr} = \frac{v_{Rx}}{r}\tag{7}$$</p>
+<h3 id="kinematic-models">Kinematic Models</h3>
+<h4 id="single-track-model">Single-Track Model</h4>
+<p>The single-track model, also known as the bicycle model, simplifies a four-wheel vehicle by treating it as if it has a single front wheel and a single rear wheel aligned on a central axis—similar to a bicycle.</p>
+<p><img src="images/part1/SingleTrack.png" alt="Single Track"></p>
+<p>According to the figure and by applying the cosine law, we obtain:
+$$r^2_{FM} = r_b^2+r_{RM}^2-2r_br_{RM}\cos\left( \frac{\pi}{2} + \beta_R\right)$$
+which leads to the non-trivial solution:
+$$r_{RM} = r_b\cos\left( \frac{\pi}{2} + \beta_R\right)+r_{FM}\cos\left(\beta_F-\beta_R\right)
+\tag{8}$$
+Next, applying the sine law:
+$$r_{FM}=\frac{\sin\left(\frac{\pi}{2}+\beta_R\right)}{\sin\left(\beta_F-\beta_R\right)}r_b$$
+Using equation $(8)$, the expression simplifies to:
+$$r_{FM}=\frac{r_b}{\cos\beta_R(\tan\beta_F-\tan\beta_R)}\tag{9}$$</p>
+<p>Since the angular velocity is given by $v = \omega r_{RM}$​, and assuming $\beta_R=0$, the equation $(9)$ becomes:
+$$\omega=\frac{v}{r_b}\tan{\beta_F}\tag{10}$$
+The linear velocity of the vehicle is simple obtain by averaging the linear velocity of rear wheels which can be calculated using the angular velocity of each rear wheel</p>
+<p>$$v=\frac{(\omega_{WrL}+\omega_{WrR})r}{2}\tag{11}$$</p>
+<p>where $r$ is the wheel radius, and $\omega_{WrL}$ and $\omega_{WrR}$ are angular velocity of left and right rear wheels, respectively.</p>
+<h3 id="double-track-model">Double-Track Model</h3>
+<p>The double-track model extends the single-track (bicycle) model by considering each of the four wheels (front-left, front-right, rear-left, rear-right) individually. This model captures the effect of separate wheel velocities, steering angles, and slip angles, providing a more accurate kinematic representation—especially during turning or dynamic maneuvers.</p>
+<p><img src="images/part1/DoubleTrack.png" alt="Double Track"></p>
+<p>According to the figure, given the vehicle twist $[\vec{v},\vec{\omega}]^T$ and the position vector of each wheel contact point $\vec{r}<em>i$, the velocity at the contact point of each wheel $i$ is given by:
+$$\begin{bmatrix}
+\bar{v}</em>{i,x}\
+\bar{v}<em>{i,y}\
+0
+\end{bmatrix} =
+\begin{bmatrix}
+v\cos\beta\
+v\sin\beta\
+0
+\end{bmatrix} +
+\begin{bmatrix}
+0\
+0\
+\omega
+\end{bmatrix} \times
+\begin{bmatrix}
+r</em>{i,x}\
+r_{i,y}\
+0
+\end{bmatrix}
+\tag{12}$$</p>
+<p>where $\beta$ is a slip angle. However, only the velocity component aligned with the actual wheel rolling direction—defined by the steering angle $\delta_i$—is relevant. Therefore, the effective rolling velocity at each wheel is:</p>
+<p>$$\tilde{v}<em>i=\bar{v}</em>{i,x}\cos\delta_i+\bar{v}_{i,y}\sin\delta_i
+\tag{13}$$</p>
+<p>Substituting Equation $(13)$ into $(12)$, we get:</p>
+<p>$$\tilde{v}<em>i=v\cos(\delta_i-\beta)+\omega\left(r</em>{i,x}\sin\delta_i-r_{i,y}\cos\delta_i\right)
+\tag{14}$$</p>
+<p>Given the angular velocity $\omega_i$, of each wheel, the linear velocity of that wheel can be approximated as $v_i=\omega_ir\approx\tilde{v}_i$ where $r$ is a wheel radius. Using the angular velocities and steering angles of the front wheels, the vehicle's angular velocity can be computed as:</p>
+<p>$$\omega = \frac{v_1\cos(\delta_2-\beta)-v_2\cos(\delta_1-\beta)}
+{r_{1,x}\sin\delta_1\cos(\delta_2-\beta) - r_{1,y}\cos\delta_1\cos(\delta_2-\beta) -
+r_{2,x}\sin\delta_2\cos(\delta_1-\beta) + r_{2,y}\cos\delta_2\cos(\delta_1-\beta)}
+\tag{15}$$</p>
+<p>The vehicle's linear velocity can then be calculated as:</p>
+<p>$$v = \frac{r_{1,x}v_2\sin\delta_1 - r_{1,y}v_2\cos\delta_1 -
+r_{2,x}v_1\sin\delta_2 + r_{2,y}v_1\cos\delta_2}
+{r_{1,x}\sin\delta_1\cos(\delta_2-\beta) - r_{1,y}\cos\delta_1\cos(\delta_2-\beta) -
+r_{2,x}\sin\delta_2\cos(\delta_1-\beta) + r_{2,y}\cos\delta_2\cos(\delta_1-\beta)}
+\tag{16}$$</p>
+<p><strong>Note</strong>: Since the double-track model considers the full state of all four wheels, the linear velocity can alternatively be approximated using the average wheel velocities, as described previously in Equation $(11)$.</p>
+<h3 id="yaw-rate">Yaw Rate</h3>
+<p>The yaw rate kinematic model refers to a formulation where the vehicle's yaw rate can either be directly computed (as in differential drive robots) or measured through onboard perception systems. This yaw rate information is then used for estimating the vehicle's pose and twist.</p>
+<p>In this work, the yaw rate of the four-wheeled robot is obtained from an Inertial Measurement Unit (IMU), while the linear velocity is computed using Equation $(11)$.</p>
+<h2 id="experiments">Experiments</h2>
+<h3 id="objectives">Objectives</h3>
+<ol>
+<li>To develop the system with bicycle model drive and Ackermann drive.</li>
+<li>To develop the system with single track, double track, and yaw rate odometry methods which varied by kinematics models.</li>
+<li>To compare the accuracy of robot position estimation using different odometry methods: single-track, double-track, and yaw-rate odometry.</li>
+<li>To analyze the impact of different drive types—namely, basic drive and Ackermann drive—on the accuracy of robot pose estimation.</li>
+<li>To identify the optimal combination of drive type and odometry method for accurate robot localization.</li>
+</ol>
+<h3 id="methodology">Methodology</h3>
+<ol>
+<li>
+<p><strong>Develop a mobile robot simulation</strong> using <strong>Gazebo</strong>. The robot steering angle limit is 30 degrees (0.52 rad) for each front wheel.</p>
+</li>
+<li>
+<p><strong>Implement a robot drive node</strong> that converts robot twist commands (in the global frame) into individual wheel angular velocities based on the specified drive type:</p>
+<ul>
+<li><strong>Basic drive</strong></li>
+<li><strong>Ackermann drive</strong></li>
+</ul>
+<p>Then, verify the correctness and functionality of the developed node.
+The implementation of drive node is located in <code>limo_controller/scripts/controller/basic</code> for basic drive and <code>limo_controller/scripts/controller/ackermann</code> for Ackermann drive. Note that both kinematic classes are inherited from kinematic class in <code>limo_controller/scripts/kinematics.py</code>.</p>
+</li>
+<li>
+<p><strong>Implement an odometry node</strong> to estimate the robot's pose using joint state and IMU data, supporting the following odometry methods:</p>
+<ul>
+<li><strong>Single-track</strong></li>
+<li><strong>Double-track</strong></li>
+<li><strong>Yaw-rate</strong></li>
+</ul>
+<p>The implementation of odometry node is located in <code>limo_controller/scripts/odometry.py</code>. Note that the kinematic class used in the code is located in <code>limo_controller/scripts/kinematics.py</code>.</p>
+</li>
+<li>
+<p><strong>Run simulation experiments</strong> for each robot drive type:</p>
+<ul>
+<li>Set the <strong>linear velocity</strong> to <strong>0.5 m/s</strong>.</li>
+<li>Vary the <strong>angular velocity</strong> for each run: −2.0, −1.0, −0.5, 0.0, 0.5, 1.0, and 2.0 rad/s.</li>
+<li>For each run, record:
+<ul>
+<li>The <strong>actual robot pose</strong></li>
+<li>The <strong>estimated pose</strong> using each odometry method</li>
+<li>The <strong>robot joint states</strong></li>
+</ul>
+</li>
+</ul>
+<p>Each run can be execute using the command:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_experiment type:={drive_type} v_x:={v_x} w_z:={w_z} time:={time}
+</div></code></pre>
+<p>where <code>drive_type</code> can be either &quot;basic&quot; or &quot;ackermann&quot;, <code>v_x</code> is the desired robot linear velocity, <code>w_z</code> is the desired robot angular velocity, and <code>time</code> is time in seconds to record experiment data. If <code>v_x</code> and <code>w_z</code> are both zero, the simulation will endlessly record the data in real-time which can be use with ROS2 teleop twist keyboard.</p>
+</li>
+<li>
+<p><strong>Analyze and compare</strong> the recorded results to evaluate the performance of each <strong>drive–odometry combination</strong>.</p>
+</li>
+</ol>
+<h3 id="results">Results</h3>
+<h4 id="basic-drive">Basic Drive</h4>
+<p>Robot Positions (positions are record in meters)
+<img src="images/part1/full_results/1-Bicycle_Positions.png" alt="Basic Drive Positions">
+Robot Orientations (orientation are record in radians)
+<img src="images/part1/full_results/2-Bicycle_Orientations.png" alt="Basic Drive Orientations">
+Robot Joint States (velocities are record in m/s)
+<img src="images/part1/full_results/3-Bicycle_JointStates.png" alt="Basic Drive Joint States"></p>
+<p>Based on the robot joint states and the resulting paths, the data confirm that the basic drive is correctly implemented. The steering angles of both front wheels are equal, as expected, and the robot follows a trajectory consistent with the given twist command. However, the recorded wheel angular velocities reveal noticeable noise spikes, which indicate <strong>slippage</strong>—a known issue in the bicycle model due to unaligned wheel axes. This slippage is caused by friction forces, especially during turns. Moreover, as the steering angle increases, the degree of slippage also increases, since the distance between the instantaneous centers of rotation of the two front wheels becomes larger.</p>
+<p>The <strong>double-track</strong> odometry method demonstrated the <strong>worst performance</strong> among all evaluated methods. This result is expected, as double-track odometry relies on the angular velocities of both front wheels to estimate the robot’s pose. However, due to friction and slippage—particularly in high steering angle scenarios—the front wheel velocities are not reliable. In contrast, the <strong>single-track</strong> and <strong>yaw-rate</strong> odometry methods do not depend on the front wheel angular velocities, making them more robust under these conditions.</p>
+<h4 id="ackermann-drive">Ackermann Drive</h4>
+<p>Robot Positions
+<img src="images/part1/full_results/4-Ackermann_Positions.png" alt="Ackermann Drive Positions">
+Robot Orientations
+<img src="images/part1/full_results/5-Ackermann_Orientations.png" alt="Ackermann Drive Orientations">
+Robot Joint States
+<img src="images/part1/full_results/6-Ackermann_JointStates.png" alt="Ackermann Drive Joint States"></p>
+<p>Compared to the basic drive that uses the bicycle model, the Ackermann drive results in less wheel friction, as evidenced by smoother wheel angular velocity profiles. However, noticeable spike noise appears in the wheel angular velocities when the desired robot angular velocity is −2.0 rad/s or 2.0 rad/s. These cases represent edge conditions, where one of the front wheel steering angles exceeds the predefined steering limit. As a result, the system violates Equation $(5)$, leading to the absence of a unique instantaneous center of rotation. This misalignment causes the robot to slip, introducing noise and instability into the motion.</p>
+<p>The <strong>double-track</strong> odometry method continues to perform the <strong>worst</strong> even when using the Ackermann drive, despite the reduction in spike noise in the wheel angular velocities. A possible reason lies in the inherent nature of double-track odometry, which <strong>heavily depends on front wheel velocities and steering angles</strong>—both of which are susceptible to disturbances from friction between the wheels and the ground. Additionally, estimation errors in this method tend to accumulate over time, further reducing its reliability.</p>
+<p>These observations suggest that even with Ackermann steering, <strong>slippage cannot be fully eliminated</strong>. Friction and the robot’s inertia—especially during turns—still introduce <strong>centrifugal effects</strong>, which contribute to deviations from the ideal path and reduce odometry accuracy.</p>
+<h4 id="comparisons">Comparisons</h4>
+<p>Paths comparison between basic drive using bicycle model and ackermann drive
+<img src="images/part1/3A-Bicycle_vs_Ackermann_Paths.png" alt="">
+Positions comparison between basic drive using bicycle model and ackermann drive
+<img src="images/part1/3B-Bicycle_vs_Ackermann_Positions.png" alt="">
+Orientations comparison between basic drive using bicycle model and ackermann drive
+<img src="images/part1/3C-Bicycle_vs_Ackermann_Orientations.png" alt="">
+Overall, all odometry methods performed <strong>better with the Ackermann drive</strong> than with the basic drive. This is primarily because Ackermann steering provides <strong>more reliable wheel velocity measurements</strong>, while the basic drive suffers from increased slippage.</p>
+<p>Interestingly, however, the double-track odometry method produced lower errors with the basic drive than with the Ackermann drive when the angular velocity command was −0.5 rad/s or 0.5 rad/s. This may be attributed to the simplicity of the bicycle model, which can be more effective at low angular velocities. In such cases, the simplified assumptions of the basic drive may lead to better performance, especially for methods like double-track odometry that heavily rely on accurate wheel velocities and steering angles. Thus, the limitations of the Ackermann model may become more pronounced in low-turn-rate scenarios.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>The symmetricity of the data between the positive robot angular velocity command and negative robot angular velocity command for both basic drive and Ackermann drive suggest that both drive nodes are correctly implemented. While the basic drive—based on the bicycle model—successfully produces the desired motion, it suffers from significant slippage due to equal steering angles on the front wheels and the lack of a shared instantaneous center of rotation. This slippage is reflected in noisy wheel angular velocities, especially at higher steering angles.</p>
+<p>Among the three odometry methods evaluated, double-track odometry consistently performed the worst, regardless of the drive type. Its reliance on front wheel velocities and steering angles—both of which are sensitive to friction and slippage—makes it less robust than single-track and yaw-rate odometry, which performed more reliably by avoiding these dependencies.</p>
+<p>Switching to the Ackermann drive reduces friction-related noise and improves overall odometry accuracy due to more realistic steering mechanics. However, extreme angular velocity commands (±2.0 rad/s) lead to steering saturation and violation of the geometric model, resulting in residual slippage and instability.</p>
+<p>Interestingly, the double-track method performed slightly better under the basic drive for low angular velocities (±0.5 rad/s), likely due to the model’s simplicity and minimal steering distortion under these conditions. This highlights that, in low-turn-rate scenarios, the basic model can occasionally outperform more complex models due to its reduced susceptibility to geometric constraints.</p>
+<p><strong>In summary</strong>, Ackermann drive combined with single-track or yaw-rate odometry provides the most reliable performance for general cases, but the choice of odometry and drive model should consider expected motion characteristics—especially angular velocity—to balance complexity, reliability, and noise sensitivity.</p>
+<h1 id="part-2-path-tracking-controller">Part 2: Path Tracking Controller</h1>
+<h2 id="background-knowledge">Background Knowledge</h2>
+<h3 id="stanley-control">Stanley Control</h3>
+<p>The stanley control is a nonlinear feedback control algorithm designed for using in the vehicle that can be modeled as a bicycle model. It focuses on reducing two types of error:</p>
+<ol>
+<li><strong>Heading Error</strong>: The difference between the vehicle's orientation and the desired path's heading direction.</li>
+<li><strong>Cross-Track Error</strong> (CTE): The lateral distance from the vehicle to the reference path.</li>
+</ol>
+<p>Typically, the stanley controller operates in the constant linear velocity and adjust the steering angle as:
+$$\delta = (\theta_p - \theta) +\arctan\left( \frac{ke}{v} \right)
+\tag{17}$$
+where</p>
+<ul>
+<li>$\theta$: current vehicle heading</li>
+<li>$\theta_p$: heading of the path at the nearest point</li>
+<li>$e$: lateral cross-track error</li>
+<li>$v$: vehicle speed</li>
+<li>$k$: gain parameter</li>
+</ul>
+<h2 id="experiments-1">Experiments 1</h2>
+<h3 id="objectives">Objectives</h3>
+<ol>
+<li>To implement the Pure Pursuit path tracking algorithm.</li>
+<li>To study how the look-ahead distance ($l$) affects tracking performance.</li>
+</ol>
+<h3 id="methodology">Methodology</h3>
+<ol>
+<li>
+<p>Implement the Pure Pursuit controller to be fully compatible with the system developed in Part 1. The implementation is located at:
+<code>limo_controller/scripts/path_tracking/path_tracking_pure_pursuit.py</code></p>
+</li>
+<li>
+<p>Execute the Pure Pursuit algorithm with various look-ahead distances: $l = 0.1, 0.25, 0.5, 0.75$ m. tThe robot—configured with Ackermann steering—is tasked with following the reference path defined in <code>limo_controller/config/path.yaml</code>. During each run, record:</p>
+<ul>
+<li>The actual trajectory vs. the reference trajectory</li>
+<li>The tracking error at each timestep</li>
+<li>The twist command at each timestep</li>
+</ul>
+<p>Note: the linear velocity Kp is fixed at 1.50, and the angular velocity Kp is fixed at 3.0</p>
+<p>Launch the simulation using:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_drive.launch.py type:=ackermann
+</div></code></pre>
+<p>Once initialized, start the path tracking:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_pathtrack.launch.py tracking:=pure_pursuit
+</div></code></pre>
+</li>
+<li>
+<p>Analyse the results.</p>
+</li>
+</ol>
+<h3 id="results">Results</h3>
+<p><img src="images/part2/PurePursuitResults.png" alt="PurePursuitResults">
+Increasing the look ahead distance results in faster tracking, required less time to completed the path, but also yields more tracking error especially in the sharp corner as can be seen in the path results from setting look ahead distance up to 0.6 m. Furthermore, since the path is almost smooth (the most sharp corner is not that sharp) the effect of the accuracy gained as the look ahead distance is decresed is only slightly observable. More interestingly, the angular velocity command of the pure pursuit with look ahead distance 0.3, 0.4, and 0.5 m also looks identical with only different in linear velocity command.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Increasing the look-ahead distance results in faster path completion but introduces greater tracking error, particularly during sharp turns (e.g., at 0.6 m). However, given the overall smoothness of the path, reducing the look-ahead distance yields only marginal improvements in accuracy. Therefore, a look-ahead distance of 0.5 m is considered optimal for the Pure Pursuit controller, as it significantly reduces completion time without a substantial loss in tracking performance.</p>
+<h2 id="experiments-2">Experiments 2</h2>
+<h3 id="objectives">Objectives</h3>
+<ol>
+<li>To implement the Stanley path tracking algorithm.</li>
+<li>To investigate the effects of varying linear velocity ($v$) and control gain ($k$) on tracking performance.</li>
+</ol>
+<h3 id="methodology">Methodology</h3>
+<ol>
+<li>
+<p>Implement the Stanley controller to be fully compatible with the system developed in Part 1. The code is located at <code>limo_controller/scripts/path_tracking/path_tracking_stanley_control.py</code></p>
+</li>
+<li>
+<p>Run the Stanley algorithm with fixed gain $k=1.0$ and varying velocities $v=0.1,0.25,0.5,0.75$ m/s. Record:</p>
+<ul>
+<li>The actual trajectory vs. the reference trajectory</li>
+<li>The tracking error at each timestep</li>
+<li>The twist command at each timestep</li>
+</ul>
+<p>Launch the simulation using:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_drive.launch.py type:=ackermann
+</div></code></pre>
+<p>Once initialized, start the path tracking:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_pathtrack.launch.py tracking:=stanley_control
+</div></code></pre>
+</li>
+<li>
+<p>Analyze the results from Step 2 to identify the best-performing velocity.</p>
+</li>
+<li>
+<p>Fix $v$ to the best-performing value from Step 2. , and run additional experiments with varying $k$ values: $k=0.5, 1.0, 2.5, 5.0, 7.5$.</p>
+</li>
+<li>
+<p>Analyse the results.</p>
+</li>
+</ol>
+<h3 id="results">Results</h3>
+<h4 id="fixed-k-vary-v">Fixed $k$, vary $v$</h4>
+<p><img src="images/part2/StanleyResults1.png" alt="StanleyResults1">
+Increasing the linear velocity results in faster path tracking, similar to increasing the look-ahead distance in Pure Pursuit. However, it also significantly degrades tracking performance. This is because lower linear velocities allow the controller more time to reach each waypoint and make the arctangent term in Equation $(17)$ more responsive due to a smaller denominator.</p>
+<p>The performance drop is not limited to sharp turns; it occurs in every corner. This is primarily because the robot is unable to decelerate dynamically at corners due to velocity constraints, leading to noticeable spikes in tracking error at each turn—especially at higher speeds.</p>
+<p>As shown in the figure, the controller operating at 0.10 m/s achieves the lowest tracking error, but requires approximately five times longer to complete the path compared to the controller at 0.50 m/s, for only a 4 mm improvement in accuracy. Therefore, a linear velocity of <strong>0.50 m/s</strong> is selected for use in subsequent experiments, as it provides a practical balance between speed and accuracy.</p>
+<h4 id="fixed-v-vary-k">Fixed $v$, vary $k$</h4>
+<p><img src="images/part2/StanleyResults2.png" alt="StanleyResults2">
+The figure illustrates that tuning the gain in the Stanley controller follows a similar pattern to tuning gains in other controllers, such as PID—only a specific range of gain values yields stable behavior and successful path completion.</p>
+<p>Increasing the gain makes the cross-track error (CTE) term more sensitive, causing the robot to respond more aggressively in order to stay close to the reference path. This typically results in reduced tracking error without significantly affecting the completion time, unlike variations in linear velocity.</p>
+<p>However, excessively high gain values lead to overly aggressive angular velocity commands (which directly influence the steering angle), resulting in oscillatory behavior and unstable angular velocity. This is evident in the figure for the case where k=7.2625,  where the robot exhibits oscillations. In extreme cases, the angular velocity can even diverge, as shown in the rightmost example in the figure above.</p>
+<p><img src="images/part2/StanleyResults-k-7.2625.png" alt="StanleyResults2"></p>
+<h3 id="conclusions">Conclusions</h3>
+<p>Both linear velocity and controller gain significantly influence the performance of the Stanley controller in path tracking tasks. While increasing linear velocity shortens completion time, it also degrades tracking accuracy—particularly in corners where the robot cannot decelerate dynamically. A moderate velocity of 0.50 m/s offers an effective trade-off, reducing runtime while maintaining acceptable accuracy.</p>
+<p>Similarly, gain tuning reveals that only a specific range yields stable and efficient behavior. Higher gain values improve responsiveness to cross-track error but can lead to instability and oscillations if too large. From the experiments, the optimal configuration is found to be $v=0.50$ m/s and $k=5.00$, since this setup achieves the fastest completion time with minimal tracking error and stable steering behavior, making it the preferred choice for further experimentation.</p>
+<h2 id="experiments-3">Experiments 3</h2>
+<h3 id="objectives">Objectives</h3>
+<p>To compare the performance of Pure Pursuit, PID, and Stanley tracking controllers under the same test conditions.</p>
+<h3 id="methodology">Methodology</h3>
+<ol>
+<li>
+<p>Implement each path tracking controller to be fully compatible with the system developed in Part 1. The source code for each controller is located in: <code>limo_controller/scripts/path_tracking</code>. The hyperparameters of each controller are manually tuned to yield the most idealistic results (i.e. be able to complete the path smoothly with minimum error) as followed</p>
+<ul>
+<li><strong>Pure Pursuit</strong>:
+<ul>
+<li>look ahead distance = 0.5 m</li>
+<li>Linear velocity P Controller: Kp = 1.5</li>
+<li>Angular velocity P Controller: Kp = 3.0</li>
+</ul>
+</li>
+<li><strong>PID</strong>:
+<ul>
+<li>Linear velocity PID Controller: Kp = 5.0, Ki = 0.0, Kd = 0.5</li>
+<li>Angular velocity P Controller: Kp = 2.5</li>
+</ul>
+</li>
+<li><strong>Stanley</strong>
+<ul>
+<li>Linear velocity = 1.0 m/s</li>
+<li>k = 5.0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Run each tracking algorithm to make the robot—configured with Ackermann steering—follow the reference path defined in <code>limo_controller/config/path.yaml</code>. During execution, record:</p>
+<ul>
+<li>The robot's actual trajectory compared to the reference trajectory</li>
+<li>The tracking error at each timestep</li>
+</ul>
+<p>The execution of each path tracking algorithm can be performed first using the command to launch the simulation:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_drive.launch.py type:=ackermann
+</div></code></pre>
+<p>Once the simulation initializes successfully, start the path tracking node:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_pathtrack.launch.py tracking:={tracking_method}
+</div></code></pre>
+<p>where <code>tracking_method</code> can be one of the following: &quot;pure_pursuit&quot;, &quot;pid&quot;, or &quot;stanley_control&quot;</p>
+</li>
+<li>
+<p>Analyze and compare the performance of each method.</p>
+</li>
+</ol>
+<h3 id="results">Results</h3>
+<p><img src="images/part2/PathTrackingControllerResults.png" alt="Results"></p>
+<p>The Pure Pursuit, PID, and Stanley controllers are all capable of successfully tracking the given path, with similar tracking error distributions across all three. Each controller achieves a mean tracking error of approximately $\mu\approx2.6$ cm and the variance of $\sigma^2\approx0.00023$ cm2.</p>
+<p>However, the key differences lie in completion time and the nature of the twist commands generated by each controller.</p>
+<p>The <strong>Pure Pursuit controller</strong> results in the fastest completion time. This is attributed to the simplicity of the path, which aligns well with the look-ahead strategy. As the controller targets a distant waypoint, heading errors are minimal, resulting in higher linear velocity commands and lower angular velocity commands.</p>
+<p>The <strong>Stanley controller</strong> produces the simplest control behavior, as it primarily adjusts the angular velocity to correct for cross-track error. Despite its simplicity, it maintains acceptable tracking performance with relatively smooth commands.</p>
+<p>In contrast, the <strong>PID controller</strong> exhibits the most variable twist commands, frequently adjusting both linear and angular velocities to compensate for tracking errors. This results in less stable control and the longest completion time among the three controllers.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>All three controllers—<strong>Pure Pursuit</strong>, <strong>Stanley</strong>, and <strong>PID</strong>—demonstrated effective path tracking with nearly identical tracking error distributions. However, their behaviors differ significantly in terms of completion time and command stability. These differences are summarized in the table below:</p>
+<table>
+<thead>
+<tr>
+<th>Controller</th>
+<th>Completion Time</th>
+<th>Command Stability</th>
+<th>Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pure Pursuit</strong></td>
+<td><strong>Fastest</strong></td>
+<td>Smooth (low ω, high v)</td>
+<td>Benefits from path simplicity; low heading error due to look-ahead</td>
+</tr>
+<tr>
+<td><strong>Stanley</strong></td>
+<td>Moderate</td>
+<td><strong>Simplest</strong> (varies only ω)</td>
+<td>Adjusts angular velocity only; stable and acceptable performance</td>
+</tr>
+<tr>
+<td><strong>PID</strong></td>
+<td><strong>Slowest</strong></td>
+<td><strong>Most variable</strong> (v and ω)</td>
+<td>High compensation effort; results in unstable commands and long time</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the results, the <strong>Pure Pursuit controller</strong> offers the best performance for the given path due to its balance of speed and accuracy. However, the <strong>Stanley controller</strong> provides a good compromise with simple control logic and robust behavior. The <strong>PID controller</strong>, while functional, is less desirable for this task due to its instability and longer execution time.</p>
+<h1 id="part-3-using-ekf-in-path-tracking">Part 3: Using EKF in Path Tracking</h1>
+<h2 id="background-knowledge">Background Knowledge</h2>
+<p>The Extended Kalman Filter (EKF) applies the core principles of the standard Kalman Filter to handle nonlinear systems by performing linearization using the Jacobian matrix evaluated around the current state estimate. EKF operates in three main steps:</p>
+<ol>
+<li>Prediction Step – Uses a motion model to predict the next state and its associated uncertainty.</li>
+<li>Linearization – Computes the Jacobian of the nonlinear functions to facilitate the propagation of uncertainty through the system.</li>
+<li>Update Step – Refines the state estimate using sensor measurements, incorporating both measurement deviation and weighting.</li>
+</ol>
+<p>In this work, the EKF is implemented through the robot_localization package, which enables EKF-based estimation using the provided sensor data. The package allows flexible tuning of parameters through configurable settings, enabling effective sensor fusion and state estimation.</p>
+<h2 id="experiments-1">Experiments 1</h2>
+<h3 id="objectives">Objectives</h3>
+<ol>
+<li>To implement ekf to compatible odometry from Part 1 to use in path tracking from Part 2.</li>
+<li>To study how turning EKF parameter for use in case have more sensor and odometry data.</li>
+</ol>
+<h3 id="implementations">Implementations</h3>
+<blockquote>
+<p>[!Warning]
+This part is incompleted due to lacking of the covariance tuning.</p>
+</blockquote>
+<p>The experiments can be run by first running the simulation using the command:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_drive.launch.py type:=ackermann pos_cov_s:={pos_cov_s} pos_cov_d:={pos_cov_d} pos_cov_y:={pos_cov_y} twist_cov_s:={twist_cov_s} twist_cov_d:={twist_cov_d} twist_cov_y:={twist_cov_y}
+</div></code></pre>
+<p>Where <code>pos_cov_s</code>, <code>pos_cov_d</code>, and <code>pos_cov_y</code> represent the pose covariance matrices obtained from the single-track, double-track, and yaw-rate odometry models, respectively. Similarly, <code>twist_cov_s</code>, <code>twist_cov_d</code>, and <code>twist_cov_y</code> represent the twist covariance matrices derived from the same respective models.</p>
+<p>The latest covariance tuning are:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_drive.launch.py type:=ackermann pose_cov_s:=0.2 pose_cov_d:=0.6 pose_cov_y:=0.1 twist_cov_s:=0.2 twist_cov_d:=0.6 twist_cov_y:=0.1
+</div></code></pre>
+<p>Then, run:</p>
+<pre class="hljs"><code><div>ros2 launch limo_controller limo_ekf_experiment.launch.py tracking:=pure_pursuit
+</div></code></pre>
+
+</body>
+</html>
