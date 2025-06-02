@@ -29,11 +29,6 @@ def render_path_tracking(context: LaunchContext, launch_description: LaunchDescr
 
 def generate_launch_description():
 
-    path_record_node = Node(
-        package="limo_controller",
-        executable=f"pathplotter.py",
-    )
-
     launch_description = LaunchDescription()
 
     # Declare a launch argument =====================================================
@@ -45,6 +40,12 @@ def generate_launch_description():
         function=render_path_tracking,
         args=[launch_description, path_tracking]
     )
+
+    path_record_node = Node(
+        package="limo_controller",
+        executable=f"pathplotter.py",
+    )
+
 
     # Add the actions to the launch description  
     launch_description.add_action(path_tracking_launch_arg)

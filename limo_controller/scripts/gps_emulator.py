@@ -23,6 +23,8 @@ class GPSEmulator(Node):
     def odom_callback(self, msg: Odometry):
         noisy_msg = Odometry()
         noisy_msg.header = msg.header
+        noisy_msg.header.stamp = self.get_clock().now().to_msg()
+
         noisy_msg.child_frame_id = msg.child_frame_id
 
         # Add Gaussian noise to position

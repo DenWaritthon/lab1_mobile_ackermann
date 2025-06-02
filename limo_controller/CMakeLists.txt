@@ -46,6 +46,7 @@ install(PROGRAMS
   scripts/cmd_vel.py
   scripts/liveplotter.py
   scripts/pathplotter.py
+  scripts/ekfplotter.py
 
   DESTINATION lib/${PROJECT_NAME}
 )

@@ -110,7 +110,7 @@ class OdometryNode(Node):
         self.t_last = t
 
         pub_odom(self.odom_pub, t, self.twist, self.pos_global, self.ori_global, self.args_cli.pos_cov, self.args_cli.twist_cov, tf_broadcaster=self.tf_broadcaster, ref_frame=f"odom_{self.args_cli.model}", logger=self.get_logger())
-
+        # pub_odom(self.odom_pub, t, self.twist, self.pos_global, self.ori_global, self.args_cli.pos_cov, self.args_cli.twist_cov, tf_broadcaster=self.tf_broadcaster, ref_frame=f"odom", logger=self.get_logger())
 
 def main(args=None):
     rclpy.init(args=ros_args)

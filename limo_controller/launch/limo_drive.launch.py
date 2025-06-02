@@ -19,24 +19,6 @@ def render_drive_type(context: LaunchContext, launch_description: LaunchDescript
 
     launch_description.add_action(controller)
 
-def render_path_tracking(context: LaunchContext, launch_description: LaunchDescription, path_tracking: LaunchConfiguration):
-    path_tracking_srt = context.perform_substitution(path_tracking)
-
-    if path_tracking_srt == 'manual':
-        path_tracking_node = Node(
-        	package="teleop_twist_keyboard",
-        	executable="teleop_twist_keyboard",
-            output='screen',
-            prefix='xterm -e'
-        )
-    else:
-        path_tracking_node = Node(
-        	package="limo_controller",
-        	executable=f"path_tracking_{path_tracking_srt}.py",
-        )
-
-    launch_description.add_action(path_tracking_node)
-
 def generate_launch_description():
 
     launch_description = LaunchDescription()
@@ -59,16 +41,13 @@ def generate_launch_description():
     drive_type_launch_arg = DeclareLaunchArgument('type', default_value='ackermann')
     drive_type = LaunchConfiguration('type')
 
-    path_tracking_launch_arg = DeclareLaunchArgument('tracking', default_value='manual')
-    path_tracking = LaunchConfiguration('tracking')
+    pose_cov_s_launch_arg = DeclareLaunchArgument('pose_cov_s', default_value='0.0')
+    pose_cov_d_launch_arg = DeclareLaunchArgument('pose_cov_d', default_value='0.0')
+    pose_cov_y_launch_arg = DeclareLaunchArgument('pose_cov_y', default_value='0.0')
 
-    pos_cov_s_launch_arg = DeclareLaunchArgument('pos_cov_s', default_value='0.0')
-    pos_cov_d_launch_arg = DeclareLaunchArgument('pos_cov_d', default_value='0.0')
-    pos_cov_y_launch_arg = DeclareLaunchArgument('pos_cov_y', default_value='0.0')
-
-    pos_cov_s = LaunchConfiguration('pos_cov_s')
-    pos_cov_d = LaunchConfiguration('pos_cov_d')
-    pos_cov_y = LaunchConfiguration('pos_cov_y')
+    pose_cov_s = LaunchConfiguration('pose_cov_s')
+    pose_cov_d = LaunchConfiguration('pose_cov_d')
+    pose_cov_y = LaunchConfiguration('pose_cov_y')
 
     twist_cov_s_launch_arg = DeclareLaunchArgument('twist_cov_s', default_value='0.0')
     twist_cov_d_launch_arg = DeclareLaunchArgument('twist_cov_d', default_value='0.0')
@@ -84,16 +63,11 @@ def generate_launch_description():
         args=[launch_description, drive_type]
     )
 
-    path_tracking_opaque_function = OpaqueFunction(
-        function=render_path_tracking,
-        args=[launch_description, path_tracking]
-    )
-
     odometry_single_track = Node(
     	package=package_name,
     	executable="odometry.py",
         arguments=["--model", 'single_track',
-                   "--pos_cov", pos_cov_s,
+                   "--pos_cov", pose_cov_s,
                    "--twist_cov", twist_cov_s]
     )
 
@@ -101,7 +75,7 @@ def generate_launch_description():
     	package=package_name,
     	executable="odometry.py",
         arguments=["--model", 'double_track',
-                   "--pos_cov", pos_cov_d,
+                   "--pos_cov", pose_cov_d,
                    "--twist_cov", twist_cov_d]
     )
 
@@ -109,7 +83,7 @@ def generate_launch_description():
     	package=package_name,
     	executable="odometry.py",
         arguments=["--model", 'yaw_rate',
-                   "--pos_cov", pos_cov_y,
+                   "--pos_cov", pose_cov_y,
                    "--twist_cov", twist_cov_y]
     )
 
@@ -119,17 +93,14 @@ def generate_launch_description():
 
     launch_description.add_action(drive_type_launch_arg)
     launch_description.add_action(controller_opaque_function)
-    launch_description.add_action(pos_cov_s_launch_arg)
-    launch_description.add_action(pos_cov_d_launch_arg)
-    launch_description.add_action(pos_cov_y_launch_arg)
+    launch_description.add_action(pose_cov_s_launch_arg)
+    launch_description.add_action(pose_cov_d_launch_arg)
+    launch_description.add_action(pose_cov_y_launch_arg)
     launch_description.add_action(twist_cov_s_launch_arg)
     launch_description.add_action(twist_cov_d_launch_arg)
     launch_description.add_action(twist_cov_y_launch_arg)
     launch_description.add_action(odometry_single_track)
     launch_description.add_action(odometry_double_track)
     launch_description.add_action(odometry_yaw_rate)
-
-    launch_description.add_action(path_tracking_launch_arg)
-    launch_description.add_action(path_tracking_opaque_function)
 
     return launch_description
