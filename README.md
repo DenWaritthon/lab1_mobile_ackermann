@@ -21,11 +21,11 @@ A fundamental method for controlling four-wheeled robots is the **bicycle model*
 
 ![alt text](images/part1/Bicycle_Model.jpg)
 
-Given the desired robot linear and angular velocities, the steering angle $\delta$ can be computed using the following relation:
+Given the desired robot linear and angular velocities, the steering angle $\delta$ can be computed using the following relation  $(1)$:
 
 $$\delta = \arctan{(\frac{\omega_{Rz}L}{v_{Rx}})}$$
 
-where $L$ is the wheelbase—the distance between the front and rear axles. The angular velocity of the rear wheel is given by:
+where $L$ is the wheelbase—the distance between the front and rear axles. The angular velocity of the rear wheel is given by $(2)$:
 
 $$\omega_{Wr} = \frac{v_{Rx}}{r} $$
 
@@ -33,7 +33,7 @@ where $r$ is the radius of the wheel. The linear velocity of the front wheel can
 
 $$v_{Wf} = \frac{v_{Rx}}{\lvert{}v_{Rx}\rvert{}}\lvert{\omega_{Rz}} \rvert{} \sqrt{L^2+R^2}$$
 
-This can be reformulated to compute the angular velocity of the front wheel as:
+This can be reformulated to compute the angular velocity of the front wheel as $(3)$:
 
 $$\omega_{Wf}=\frac{v_{Rx}}{r\lvert{}v_{Rx}\rvert{}} \sqrt{L^2\omega_{Rz}^2+v_{Rx}^2}$$
 
@@ -52,20 +52,20 @@ Unlike differential or bicycle models, Ackermann steering more accurately reflec
 
 ![Ackermann Model](images/part1/Ackermann_Model.jpg)
 
-Given the desired robot linear and angular velocities, the **Ackermann steering angle** $\delta_{\text{Ack}}$ can be calculated using the same relation as in the bicycle model:
+Given the desired robot linear and angular velocities, the **Ackermann steering angle** $\delta_{\text{Ack}}$ can be calculated using the same relation as in the bicycle model $(4)$:
 
 $$\delta_{\text{Ack}} = \arctan(\frac{\omega_{Rz}L}{v_{Rx}})$$
 
-To maintain a common **instantaneous center of rotation**, the steering angles for the left and right front wheels are derived geometrically as:
+To maintain a common **instantaneous center of rotation**, the steering angles for the left and right front wheels are derived geometrically as $(5)$:
 
 $$\delta_L = \arctan( \frac{L \tan(\delta_{\text{Ack}})}{L + 0.5B \tan(\delta_{\text{Ack}})} ), \quad\delta_R = \arctan( \frac{L \tan(\delta_{\text{Ack}})}{L - 0.5B \tan(\delta_{\text{Ack}})} )$$
 
 
-Given the actual steering angles of both front wheels, the **effective Ackermann steering angle** can be recovered using:
+Given the actual steering angles of both front wheels, the **effective Ackermann steering angle** can be recovered using $(6)$:
 
 $$\delta_{\text{Ack}} = \arctan( \frac{2 \tan(\delta_L) \tan(\delta_R)}{\tan(\delta_L) + \tan(\delta_R)} )$$
 
-The angular velocity of the rear wheel follows the same equation as in the bicycle model:
+The angular velocity of the rear wheel follows the same equation as in the bicycle model $(7)$:
 
 $$\omega_{Wr} = \frac{v_{Rx}}{r}$$
 
@@ -79,7 +79,7 @@ According to the figure and by applying the cosine law, we obtain:
 
 $$r^2_{FM} = r_b^2+r_{RM}^2-2r_br_{RM}\cos( \frac{\pi}{2} + \beta_R)$$
 
-which leads to the non-trivial solution:
+which leads to the non-trivial solution $(8)$:
 
 $$r_{RM} = r_b\cos( \frac{\pi}{2} + \beta_R)+r_{FM}\cos(\beta_F-\beta_R)$$
 
@@ -87,15 +87,15 @@ Next, applying the sine law:
 
 $$r_{FM}=\frac{\sin(\frac{\pi}{2}+\beta_R)}{\sin(\beta_F-\beta_R)}r_b$$
 
-Using equation $(8)$, the expression simplifies to:
+Using equation $(8)$, the expression simplifies to $(9)$:
 
 $$r_{FM}=\frac{r_b}{\cos\beta_R(\tan\beta_F-\tan\beta_R)}$$
 
-Since the angular velocity is given by $v = \omega r_{RM}$​, and assuming $\beta_R=0$, the equation $(9)$ becomes:
+Since the angular velocity is given by $v = \omega r_{RM}$​, and assuming $\beta_R=0$, the equation $(9)$ becomes $(10)$:
 
 $$\omega=\frac{v}{r_b}\tan{\beta_F}$$
 
-The linear velocity of the vehicle is simple obtain by averaging the linear velocity of rear wheels which can be calculated using the angular velocity of each rear wheel
+The linear velocity of the vehicle is simple obtain by averaging the linear velocity of rear wheels which can be calculated using the angular velocity of each rear wheel $(11)$
 
 $$v=\frac{(\omega_{WrL}+\omega_{WrR})r}{2}$$
 
@@ -106,7 +106,7 @@ The double-track model extends the single-track (bicycle) model by considering e
 
 ![Double Track](images/part1/DoubleTrack.png)
 
-According to the figure, given the vehicle twist $[\vec{v},\vec{\omega}]^T$ and the position vector of each wheel contact point $\vec{r}_i$, the velocity at the contact point of each wheel $i$ is given by:
+According to the figure, given the vehicle twist $[\vec{v},\vec{\omega}]^T$ and the position vector of each wheel contact point $\vec{r}_i$, the velocity at the contact point of each wheel $i$ is given by $(12)$:
 
 $$\begin{bmatrix}
         \bar{v}_{i,x}\\
@@ -129,21 +129,21 @@ $$\begin{bmatrix}
         0
     \end{bmatrix}$$
 
-where $\beta$ is a slip angle. However, only the velocity component aligned with the actual wheel rolling direction—defined by the steering angle $\delta_i$—is relevant. Therefore, the effective rolling velocity at each wheel is:
+where $\beta$ is a slip angle. However, only the velocity component aligned with the actual wheel rolling direction—defined by the steering angle $\delta_i$—is relevant. Therefore, the effective rolling velocity at each wheel is $(13)$:
 
 $$\tilde{v}_i=\bar{v}_{i,x}\cos\delta_i+\bar{v}_{i,y}\sin\delta_i$$
 
-Substituting Equation $(13)$ into $(12)$, we get:
+Substituting Equation $(13)$ into $(12)$, we get $(14)$:
 
 $$\tilde{v}_i=v\cos(\delta_i-\beta)+\omega(r_{i,x}\sin\delta_i-r_{i,y}\cos\delta_i)$$
 
-Given the angular velocity $\omega_i$, of each wheel, the linear velocity of that wheel can be approximated as $v_i=\omega_ir\approx\tilde{v}_i$ where $r$ is a wheel radius. Using the angular velocities and steering angles of the front wheels, the vehicle's angular velocity can be computed as:
+Given the angular velocity $\omega_i$, of each wheel, the linear velocity of that wheel can be approximated as $v_i=\omega_ir\approx\tilde{v}_i$ where $r$ is a wheel radius. Using the angular velocities and steering angles of the front wheels, the vehicle's angular velocity can be computed as $(15)$:
 
 $$\omega = \frac{v_1\cos(\delta_2-\beta)-v_2\cos(\delta_1-\beta)}
     {r_{1,x}\sin\delta_1\cos(\delta_2-\beta) - r_{1,y}\cos\delta_1\cos(\delta_2-\beta) - 
      r_{2,x}\sin\delta_2\cos(\delta_1-\beta) + r_{2,y}\cos\delta_2\cos(\delta_1-\beta)}$$
 
-The vehicle's linear velocity can then be calculated as:
+The vehicle's linear velocity can then be calculated as $(16)$:
 
 $$v = \frac{r_{1,x}v_2\sin\delta_1 - r_{1,y}v_2\cos\delta_1 - 
               r_{2,x}v_1\sin\delta_2 + r_{2,y}v_1\cos\delta_2}
@@ -256,7 +256,7 @@ The stanley control is a nonlinear feedback control algorithm designed for using
 1. **Heading Error**: The difference between the vehicle's orientation and the desired path's heading direction.
 2. **Cross-Track Error** (CTE): The lateral distance from the vehicle to the reference path.
 
-Typically, the stanley controller operates in the constant linear velocity and adjust the steering angle as:
+Typically, the stanley controller operates in the constant linear velocity and adjust the steering angle as $(17)$:
 
 $$\delta = (\theta_p - \theta) +\arctan( \frac{ke}{v} )$$
 
